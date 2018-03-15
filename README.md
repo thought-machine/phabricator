@@ -31,30 +31,30 @@ Changes are marked in the source clearly and a quick search for "TM CHANGES"
 should find them.
 
  * Differential
- ** *New* conduit method added - GetRevisionTransactions
- *** We use this method to retrieve a list of the users who have approved a
-     revision. This is slowly being phased out in favour of closer integration
-     with the OWNERS functionality.
+   * *New* conduit method added - GetRevisionTransactions
+     * We use this method to retrieve a list of the users who have approved a
+       revision. This is slowly being phased out in favour of closer integration
+       with the OWNERS functionality.
  * Maniphest
- ** *Change* to TaskListView
- *** We render a custom icon based on a custom field in the task.
- *** We render the task status
+   * *Change* to TaskListView
+     * We render a custom icon based on a custom field in the task.
+     * We render the task status
  * People
- ** *Change* to UserQuery conduit method
- *** We always return the user's email as it is not private information in
-     our organisation.
+   * *Change* to UserQuery conduit method
+     * We always return the user's email as it is not private information in
+       our organisation.
  * Project
- ** *Change* to ProjectBoardView controller
- *** We allow this page to be `frameable` so we can embed it in other dashboards
- ** *Change* to ProjectMove controller
- *** We disable the "feature" where dragging a task to a column can also change
-     its priority as this is clearly nonsense.
- ** *Change* to Column storage
- *** We reverse the order of milestone columns so the newest is on the left
- *** We default to 'Priority' order
- ** *Change* to BoardTaskCard view
- *** Again we show a custom icon based on the custom field
- *** We show the assigned user's name on the card
+   * *Change* to ProjectBoardView controller
+     * We allow this page to be `frameable` so we can embed it in other dashboards
+   * *Change* to ProjectMove controller
+     * We disable the "feature" where dragging a task to a column can also change
+       its priority as this is clearly nonsense.
+   * *Change* to Column storage
+     * We reverse the order of milestone columns so the newest is on the left
+     * We default to 'Priority' order
+   * *Change* to BoardTaskCard view
+     * Again we show a custom icon based on the custom field
+     * We show the assigned user's name on the card
 
 # Installation Instructions
 

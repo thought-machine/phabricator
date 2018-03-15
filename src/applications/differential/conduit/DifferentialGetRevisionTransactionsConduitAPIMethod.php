@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * TM CHANGES: New class
+ *
+ * Returns all the transactions associated with a differential revision.
+ * Based on https://secure.phabricator.com/D13066
+ */
 final class DifferentialGetRevisionTransactionsConduitAPIMethod
   extends DifferentialConduitAPIMethod {
 
