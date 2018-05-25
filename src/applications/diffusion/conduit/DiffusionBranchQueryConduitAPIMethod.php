@@ -30,6 +30,8 @@ final class DiffusionBranchQueryConduitAPIMethod
 
     $contains = $request->getValue('contains');
     if (strlen($contains)) {
+      // TM CHANGES START
+      // Work around for https://discourse.phabricator-community.org/t/poor-performance-fetching-git-branches-in-repo-with-lots-of-branches/1490
       // NOTE: This won't work for regexps, but we don't use them.
       $branch_filter = $repository->getDetail('branch-filter');
       $value = array_keys($branch_filter);
@@ -56,6 +58,7 @@ final class DiffusionBranchQueryConduitAPIMethod
           $stdout,
           DiffusionGitBranch::DEFAULT_GIT_REMOTE);
       }
+      // TM CHANGES END
 
       $refs = array();
       foreach ($ref_map as $ref => $commit) {
