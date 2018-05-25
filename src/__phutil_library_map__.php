@@ -10,6 +10,7 @@ phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
     'DifferentialGetRevisionTransactionsConduitAPIMethod' => 'applications/differential/conduit/DifferentialGetRevisionTransactionsConduitAPIMethod.php',
+    'DiffusionBranchQueryConduitAPIMethod' => 'applications/diffusion/conduit/DiffusionBranchQueryConduitAPIMethod.php',
     'ManiphestTaskListView' => 'applications/maniphest/view/ManiphestTaskListView.php',
     'PhabricatorProjectBoardViewController' => 'applications/project/controller/PhabricatorProjectBoardViewController.php',
     'PhabricatorProjectColumn' => 'applications/project/storage/PhabricatorProjectColumn.php',
@@ -20,6 +21,7 @@ phutil_register_library_map(array(
   'function' => array(),
   'xmap' => array(
     'DifferentialGetRevisionTransactionsConduitAPIMethod' => 'DifferentialConduitAPIMethod',
+    'DiffusionBranchQueryConduitAPIMethod' => 'DiffusionQueryConduitAPIMethod',
     'ManiphestTaskListView' => 'ManiphestView',
     'PhabricatorProjectBoardViewController' => 'PhabricatorProjectBoardController',
     'PhabricatorProjectColumn' => array(
