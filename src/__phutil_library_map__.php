@@ -9,6 +9,8 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'AphrontResponse' => 'aphront/response/AphrontResponse.php',
+    'CelerityStaticResourceResponse' => 'applications/celerity/CelerityStaticResourceResponse.php',
     'DifferentialGetRevisionTransactionsConduitAPIMethod' => 'applications/differential/conduit/DifferentialGetRevisionTransactionsConduitAPIMethod.php',
     'DiffusionBranchQueryConduitAPIMethod' => 'applications/diffusion/conduit/DiffusionBranchQueryConduitAPIMethod.php',
     'ManiphestTaskListView' => 'applications/maniphest/view/ManiphestTaskListView.php',
@@ -20,6 +22,8 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
+    'AphrontResponse' => 'Phobject',
+    'CelerityStaticResourceResponse' => 'Phobject',
     'DifferentialGetRevisionTransactionsConduitAPIMethod' => 'DifferentialConduitAPIMethod',
     'DiffusionBranchQueryConduitAPIMethod' => 'DiffusionQueryConduitAPIMethod',
     'ManiphestTaskListView' => 'ManiphestView',
