@@ -241,6 +241,8 @@ final class ManiphestTaskListView extends ManiphestView {
           return 'fa-bug';
         } else if ($bug_or_feature == 'tasktype:design') {
           return 'fa-paint-brush';
+        } else if ($bug_or_feature == 'tasktype:lego') {
+          return 'fa-magic';
         } else if ($bug_or_feature == 'tasktype:tdebt') {
           return 'fa-puzzle-piece';
         } else if ($bug_or_feature == 'tasktype:releases') {
