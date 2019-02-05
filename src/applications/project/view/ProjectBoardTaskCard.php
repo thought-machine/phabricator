@@ -79,22 +79,6 @@ final class ProjectBoardTaskCard extends Phobject {
     $color_map = ManiphestTaskPriority::getColorMap();
     $bar_color = idx($color_map, $task->getPriority(), 'grey');
 
-    // TM CHANGES BEGIN:
-    $status_map = ManiphestTaskStatus::getTaskStatusMap();
-    $status = $task->getStatus();
-    $status_name = idx($status_map, $task->getStatus());
-
-    // Fetch custom fields for the given task.
-    $field_list = PhabricatorCustomField::getObjectFields(
-      $task,
-      PhabricatorCustomField::ROLE_VIEW);
-    $field_list->readFieldsFromStorage($task);
-
-    $icon = ManiphestTaskListView::getIcon($task, $field_list);
-    $category = ManiphestTaskListView::getCategory($task, $field_list);
-    $icon_color = ManiphestTaskListView::getColor($task);
-    // TM CHANGES END
-
     $card = id(new PHUIObjectItemView())
       ->setObject($task)
       ->setUser($viewer)
@@ -110,23 +94,11 @@ final class ProjectBoardTaskCard extends Phobject {
         ->setIcon('fa-pencil')
         ->addSigil('edit-project-card')
         ->setHref('/maniphest/task/edit/'.$task->getID().'/'))
-      ->setBarColor($bar_color)
-      // TM CHANGES BEGIN: Change icon colour based on task type
-      ->setStatusIcon($icon.' '.$icon_color);
-      // TM CHANGES END
+      ->setBarColor($bar_color);
 
     if ($owner) {
       $card->addHandleIcon($owner, $owner->getName());
-      // TM CHANGES BEGIN: Add owner name, hide Unclassified categories.
-      $card->addAttribute('Status: '.$status_name.' ('.$owner->getName().')');
-    } else {
-      $card->addAttribute('Status: '.$status_name);
     }
-
-    if ($category != 'Unclassified') {
-      $card->addAttribute($category);
-    }
-    // TM CHANGES END
 
     $cover_file = $this->getCoverImageFile();
     if ($cover_file) {
@@ -159,6 +131,20 @@ final class ProjectBoardTaskCard extends Phobject {
         ->setIcon($icon.' grey');
       $card->addAttribute($icon);
       $card->setBarColor('grey');
+      // TM CHANGES BEGIN: Add icon from subtype, and change colour based on task type
+      $card->setStatusIcon($subtype->getIcon().' grey');
+    } else {
+      $card->setStatusIcon($subtype->getIcon().' '.$bar_color);
+
+      // Add current status and owner name
+      $status_map = ManiphestTaskStatus::getTaskStatusMap();
+      $status_name = idx($status_map, $task->getStatus());
+      if ($owner) {
+        $card->addAttribute($status_name.' ('.$owner->getName().')');
+      } else {
+        $card->addAttribute($status_name);
+      }
+      // TM CHANGES END
     }
 
     $project_handles = $this->getProjectHandles();
