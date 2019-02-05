@@ -37,7 +37,7 @@ should find them.
        with the OWNERS functionality.
  * Maniphest
    * *Change* to TaskListView
-     * We render a custom icon based on a custom field in the task.
+     * We render a custom icon based on the Maniphest subtype.
      * We render the task status
  * People
    * *Change* to UserQuery conduit method
@@ -53,8 +53,8 @@ should find them.
      * We reverse the order of milestone columns so the newest is on the left
      * We default to 'Priority' order
    * *Change* to BoardTaskCard view
-     * Again we show a custom icon based on the custom field
-     * We show the assigned user's name on the card
+     * Again we show a custom icon based on the subtype.
+     * We show the assigned user's name on the card.
 
 # Installation Instructions
 
