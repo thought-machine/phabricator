@@ -49,14 +49,12 @@ final class ManiphestTaskListView extends ManiphestView {
     }
 
     $status_map = ManiphestTaskStatus::getTaskStatusMap();
+    $color_map = ManiphestTaskPriority::getColorMap();
     $priority_map = ManiphestTaskPriority::getTaskPriorityMap();
 
     if ($this->showBatchControls) {
       Javelin::initBehavior('maniphest-list-editor');
     }
-
-    $subtype_map = id(new ManiphestTask())
-      ->newEditEngineSubtypeMap();
 
     foreach ($this->tasks as $task) {
       $item = id(new PHUIObjectItemView())
@@ -76,16 +74,15 @@ final class ManiphestTaskListView extends ManiphestView {
       $status_name = idx($status_map, $task->getStatus());
       $tooltip = pht('%s, %s', $status_name, $pri);
 
-      // TM CHANGES BEGIN: Fetch custom fields for the given task.
-      $field_list = PhabricatorCustomField::getObjectFields(
-        $task,
-        PhabricatorCustomField::ROLE_VIEW);
-      $field_list->readFieldsFromStorage($task);
-
-      $icon = self::getIcon($task, $field_list);
-      $category = self::getCategory($task, $field_list);
-      $color = self::getColor($task);
+      // TM CHANGES BEGIN: Take icon from subtype where possible
+      $subtype = $task->newSubtypeObject();
+      if ($subtype) {
+        $icon = $subtype->getIcon();
+      } else {
+        $icon = ManiphestTaskStatus::getStatusIcon($task->getStatus());
+      }
       // TM CHANGES END
+      $color = idx($color_map, $task->getPriority(), 'grey');
       if ($task->isClosed()) {
         $item->setDisabled(true);
         $color = 'grey';
@@ -142,11 +139,8 @@ final class ManiphestTaskListView extends ManiphestView {
           ->setSlim(true)
           ->setHandles($project_handles));
 
-      // TM CHANGES BEGIN:
-      $item->addAttribute('Status: '.$status_name);
-      if ($category != 'Unclassified') {
-        $item->addAttribute($category);
-      }
+      // TM CHANGES BEGIN: Also show the current status
+      $item->addAttribute($status_name);
       // TM CHANGES END
 
       $item->setMetadata(
@@ -197,70 +191,4 @@ final class ManiphestTaskListView extends ManiphestView {
       ->withPHIDs($phids)
       ->execute();
   }
-
-  // TM CHANGES BEGIN
-  /**
-   * Get a task's corresponding icon color as a function of its priority.
-   */
-  public static function getColor($task) {
-    $color_map = ManiphestTaskPriority::getColorMap();
-    return idx($color_map, $task->getPriority(), 'grey');
-  }
-
-  /**
-   * Get a task's corresponding category.
-   */
-  public static function getCategory($task, $field_list) {
-    foreach ($field_list->getFields() as $val) {
-      if ($val->getFieldName() == 'Category') {
-        $cat = $val->getOldValueForApplicationTransactions();
-        if ($cat == '') {
-          return 'Unclassified';
-        } else {
-          return $cat;
-        }
-      }
-    }
-    return 'Unclassified';
-  }
-
-  /**
-   * Get a task's corresponding icon depending on whether it is a bug or a
-   * feature.
-   */
-  public static function getIcon($task, $field_list) {
-    // Figure out whether the task is a bug or a feature (i.e. look at the
-    // classification, which is a custom fields). The icon will change
-    // depending on this.
-    foreach ($field_list->getFields() as $val) {
-      if ($val->getFieldName() == 'Classification') {
-        $bug_or_feature = $val->getOldValueForApplicationTransactions();
-        if ($bug_or_feature == 'tasktype:feature') {
-          return 'fa-star';
-        } else if ($bug_or_feature == 'tasktype:bug') {
-          return 'fa-bug';
-        } else if ($bug_or_feature == 'tasktype:design') {
-          return 'fa-paint-brush';
-        } else if ($bug_or_feature == 'tasktype:lego') {
-          return 'fa-magic';
-        } else if ($bug_or_feature == 'tasktype:tdebt') {
-          return 'fa-puzzle-piece';
-        } else if ($bug_or_feature == 'tasktype:releases') {
-          return 'fa-code-fork';
-        } else if ($bug_or_feature == 'tasktype:Research') {
-          return 'fa-flask';
-        } else if ($bug_or_feature == 'tasktype:hr') {
-          return 'fa-users';
-        } else if ($bug_or_feature == 'tasktype:Vulnerability') {
-          return 'fa-bullseye';
-        } else if ($bug_or_feature == 'tasktype:epic') {
-          return 'fa-cubes';
-        } else if ($bug_or_feature == 'tasktype:Security') {
-          return 'fa-shield';
-        }
-      }
-    }
-    return 'fa-question';
-  }
-  // TM CHANGES END
 }
