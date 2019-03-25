@@ -159,7 +159,7 @@ abstract class AphrontResponse extends Phobject {
     // clicks a dangerous button hidden under a picture of a cat.
     if ($this->frameable) {
       // TM CHANGES BEGIN: Allow ThoughtMachine SecOps domain to embed Phabricator frames
-	    $csp[] = "frame-ancestors 'self' https://bunker.gaia.tmachine.io";
+      $csp[] = "frame-ancestors 'self' https://bunker.gaia.tmachine.io";
       // TM CHANGES END
     } else {
       $csp[] = "frame-ancestors 'none'";
