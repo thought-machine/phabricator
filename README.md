@@ -49,9 +49,6 @@ should find them.
    * *Change* to ProjectMove controller
      * We disable the "feature" where dragging a task to a column can also change
        its priority as this is clearly nonsense.
-   * *Change* to Column storage
-     * We reverse the order of milestone columns so the newest is on the left
-     * We default to 'Priority' order
    * *Change* to BoardTaskCard view
      * Again we show a custom icon based on the subtype.
      * We show the assigned user's name on the card.
