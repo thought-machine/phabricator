@@ -46,9 +46,6 @@ should find them.
  * Project
    * *Change* to ProjectBoardView controller
      * We allow this page to be `frameable` so we can embed it in other dashboards
-   * *Change* to ProjectMove controller
-     * We disable the "feature" where dragging a task to a column can also change
-       its priority as this is clearly nonsense.
    * *Change* to BoardTaskCard view
      * Again we show a custom icon based on the subtype.
      * We show the assigned user's name on the card.
