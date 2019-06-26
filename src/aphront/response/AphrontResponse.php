@@ -24,12 +24,12 @@ abstract class AphrontResponse extends Phobject {
   final public function addContentSecurityPolicyURI($kind, $uri) {
     if ($this->contentSecurityPolicyURIs === null) {
       $this->contentSecurityPolicyURIs = array(
-        'script-src' => array(),
-        'connect-src' => array(),
-        'frame-src' => array(),
-        'form-action' => array(),
-        'object-src' => array(),
-      );
+         'script-src' => array(),
+         'connect-src' => array(),
+         'frame-src' => array(),
+         'form-action' => array(),
+         'object-src' => array(),
+       );
     }
 
     if (!isset($this->contentSecurityPolicyURIs[$kind])) {
@@ -50,11 +50,20 @@ abstract class AphrontResponse extends Phobject {
   }
 
 
-  /* -(  Content  )------------------------------------------------------------ */
+/* -(  Content  )------------------------------------------------------------ */
 
 
   public function getContentIterator() {
-    return array($this->buildResponseString());
+    // By default, make sure responses are truly returning a string, not some
+    // kind of object that behaves like a string.
+
+    // We're going to remove the execution time limit before dumping the
+    // response into the sink, and want any rendering that's going to occur
+    // to happen BEFORE we release the limit.
+
+    return array(
+      (string)$this->buildResponseString(),
+    );
   }
 
   public function buildResponseString() {
@@ -62,7 +71,7 @@ abstract class AphrontResponse extends Phobject {
   }
 
 
-  /* -(  Metadata  )----------------------------------------------------------- */
+/* -(  Metadata  )----------------------------------------------------------- */
 
 
   public function getHeaders() {
@@ -211,7 +220,7 @@ abstract class AphrontResponse extends Phobject {
     $uri = id(new PhutilURI($uri))
       ->setPath(null)
       ->setFragment(null)
-      ->setQueryParams(array());
+      ->removeAllQueryParams();
 
     $uri = (string)$uri;
     if (preg_match('/[ ;\']/', $uri)) {
