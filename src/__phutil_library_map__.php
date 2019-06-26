@@ -11,22 +11,14 @@ phutil_register_library_map(array(
   'class' => array(
     'AphrontResponse' => 'aphront/response/AphrontResponse.php',
     'CelerityStaticResourceResponse' => 'applications/celerity/CelerityStaticResourceResponse.php',
-    'DifferentialGetRevisionTransactionsConduitAPIMethod' => 'applications/differential/conduit/DifferentialGetRevisionTransactionsConduitAPIMethod.php',
-    'DiffusionBranchQueryConduitAPIMethod' => 'applications/diffusion/conduit/DiffusionBranchQueryConduitAPIMethod.php',
-    'ManiphestTaskListView' => 'applications/maniphest/view/ManiphestTaskListView.php',
     'PhabricatorProjectBoardViewController' => 'applications/project/controller/PhabricatorProjectBoardViewController.php',
-    'ProjectBoardTaskCard' => 'applications/project/view/ProjectBoardTaskCard.php',
     'UserQueryConduitAPIMethod' => 'applications/people/conduit/UserQueryConduitAPIMethod.php',
   ),
   'function' => array(),
   'xmap' => array(
     'AphrontResponse' => 'Phobject',
     'CelerityStaticResourceResponse' => 'Phobject',
-    'DifferentialGetRevisionTransactionsConduitAPIMethod' => 'DifferentialConduitAPIMethod',
-    'DiffusionBranchQueryConduitAPIMethod' => 'DiffusionQueryConduitAPIMethod',
-    'ManiphestTaskListView' => 'ManiphestView',
     'PhabricatorProjectBoardViewController' => 'PhabricatorProjectBoardController',
-    'ProjectBoardTaskCard' => 'Phobject',
     'UserQueryConduitAPIMethod' => 'UserConduitAPIMethod',
   ),
 ));

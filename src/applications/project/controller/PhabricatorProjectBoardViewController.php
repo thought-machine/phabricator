@@ -979,7 +979,7 @@ final class PhabricatorProjectBoardViewController
       ->setDisabled(!$can_edit);
 
     $filter_menu = id(new PhabricatorActionListView())
-      ->setUser($viewer);
+        ->setUser($viewer);
     foreach ($items as $item) {
       $filter_menu->addAction($item);
     }
@@ -1073,7 +1073,7 @@ final class PhabricatorProjectBoardViewController
       ManiphestBulkEditCapability::CAPABILITY);
 
     $manage_menu = id(new PhabricatorActionListView())
-      ->setUser($viewer);
+        ->setUser($viewer);
     foreach ($manage_items as $item) {
       $manage_menu->addAction($item);
     }
@@ -1377,18 +1377,18 @@ final class PhabricatorProjectBoardViewController
           ->setProjectPHID($project->getPHID())
           ->save();
 
-        $xactions = array();
-        $xactions[] = id(new PhabricatorProjectTransaction())
-          ->setTransactionType(
-            PhabricatorProjectWorkboardTransaction::TRANSACTIONTYPE)
-          ->setNewValue(1);
+          $xactions = array();
+          $xactions[] = id(new PhabricatorProjectTransaction())
+            ->setTransactionType(
+                PhabricatorProjectWorkboardTransaction::TRANSACTIONTYPE)
+            ->setNewValue(1);
 
-        id(new PhabricatorProjectTransactionEditor())
-          ->setActor($viewer)
-          ->setContentSourceFromRequest($request)
-          ->setContinueOnNoEffect(true)
-          ->setContinueOnMissingFields(true)
-          ->applyTransactions($project, $xactions);
+          id(new PhabricatorProjectTransactionEditor())
+            ->setActor($viewer)
+            ->setContentSourceFromRequest($request)
+            ->setContinueOnNoEffect(true)
+            ->setContinueOnMissingFields(true)
+            ->applyTransactions($project, $xactions);
 
         return id(new AphrontRedirectResponse())
           ->setURI($board_uri);
@@ -1473,7 +1473,7 @@ final class PhabricatorProjectBoardViewController
 
       $xactions[] = id(new PhabricatorProjectTransaction())
         ->setTransactionType(
-          PhabricatorProjectWorkboardTransaction::TRANSACTIONTYPE)
+            PhabricatorProjectWorkboardTransaction::TRANSACTIONTYPE)
         ->setNewValue(1);
 
       id(new PhabricatorProjectTransactionEditor())

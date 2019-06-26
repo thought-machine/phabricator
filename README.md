@@ -30,15 +30,11 @@ make up your own mind.
 Changes are marked in the source clearly and a quick search for "TM CHANGES"
 should find them.
 
- * Differential
-   * *New* conduit method added - GetRevisionTransactions
-     * We use this method to retrieve a list of the users who have approved a
-       revision. This is slowly being phased out in favour of closer integration
-       with the OWNERS functionality.
- * Maniphest
-   * *Change* to TaskListView
-     * We render a custom icon based on the Maniphest subtype.
-     * We render the task status
+ * Aphront
+   * AphrontResponse is extended to allow TM SecOps to embed `frameable` pages.
+ * Celerity
+   * Fix a typo in CelerityStaticResourceResponse that means `frameable`
+     does not work.
  * People
    * *Change* to UserQuery conduit method
      * We always return the user's email as it is not private information in
@@ -46,9 +42,6 @@ should find them.
  * Project
    * *Change* to ProjectBoardView controller
      * We allow this page to be `frameable` so we can embed it in other dashboards
-   * *Change* to BoardTaskCard view
-     * Again we show a custom icon based on the subtype.
-     * We show the assigned user's name on the card.
 
 # Installation Instructions
 
