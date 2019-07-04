@@ -42,6 +42,8 @@ should find them.
  * Project
    * *Change* to ProjectBoardView controller
      * We allow this page to be `frameable` so we can embed it in other dashboards
+   * *Change* to ProjectBoardTaskCard
+     * We display the current status on the task.
 
 # Installation Instructions
 
