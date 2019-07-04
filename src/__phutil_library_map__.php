@@ -12,6 +12,7 @@ phutil_register_library_map(array(
     'AphrontResponse' => 'aphront/response/AphrontResponse.php',
     'CelerityStaticResourceResponse' => 'applications/celerity/CelerityStaticResourceResponse.php',
     'PhabricatorProjectBoardViewController' => 'applications/project/controller/PhabricatorProjectBoardViewController.php',
+    'ProjectBoardTaskCard' => 'applications/project/view/ProjectBoardTaskCard.php',
     'UserQueryConduitAPIMethod' => 'applications/people/conduit/UserQueryConduitAPIMethod.php',
   ),
   'function' => array(),
@@ -19,6 +20,7 @@ phutil_register_library_map(array(
     'AphrontResponse' => 'Phobject',
     'CelerityStaticResourceResponse' => 'Phobject',
     'PhabricatorProjectBoardViewController' => 'PhabricatorProjectBoardController',
+    'ProjectBoardTaskCard' => 'Phobject',
     'UserQueryConduitAPIMethod' => 'UserConduitAPIMethod',
   ),
 ));
