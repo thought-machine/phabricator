@@ -36,7 +36,7 @@ final class PhabricatorGoogleIAPAuthProvider
   public function getAdapter() {
     if (!$this->adapter) {
       $adapter = new PhutilEmptyAuthAdapter();
-      $adapter->setAdapterType('google');
+      $adapter->setAdapterType('proxy');
       $adapter->setAdapterDomain('google.com');
       $this->adapter = $adapter;
     }
@@ -52,7 +52,8 @@ final class PhabricatorGoogleIAPAuthProvider
     $response = null;
     try {
       $request = $controller->getRequest();
-      $email = $this->verifyJWT($request->getHTTPHeader(IAP_HEADER));
+      $email = $this->verifyJWT($request->getHTTPHeader(
+          PhabricatorGoogleIAPAuthProvider::IAP_HEADER));
       return array($this->loadOrCreateAccount($email), $response);
     } catch (Exception $ex) {
       $response = $controller->buildProviderErrorResponse($this, $ex->getMessage());
@@ -97,7 +98,7 @@ final class PhabricatorGoogleIAPAuthProvider
   }
 
   public function canAuthRequest(AphrontRequest $request) {
-    return $request->getHTTPHeader(IAP_HEADER);
+    return $request->getHTTPHeader(PhabricatorGoogleIAPAuthProvider::IAP_HEADER);
   }
 
 }
