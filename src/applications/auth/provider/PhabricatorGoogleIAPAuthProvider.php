@@ -1,4 +1,5 @@
 <?php
+// TM CHANGES BEGIN: Entire class is added.
 
 use SimpleJWT\JWT;
 use SimpleJWT\Keys\KeySet;
@@ -98,3 +99,4 @@ final class PhabricatorGoogleIAPAuthProvider
   }
 
 }
+// TM CHANGES END

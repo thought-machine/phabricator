@@ -32,9 +32,13 @@ should find them.
 
  * Aphront
    * AphrontResponse is extended to allow TM SecOps to embed `frameable` pages.
+ * Auth
+   * Added an auth provider for Google Cloud IAP.
  * Celerity
    * Fix a typo in CelerityStaticResourceResponse that means `frameable`
      does not work.
+ * Externals
+   * Added SimpleJWT for use in the Cloud IAP auth provider.
  * People
    * *Change* to UserQuery conduit method
      * We always return the user's email as it is not private information in
