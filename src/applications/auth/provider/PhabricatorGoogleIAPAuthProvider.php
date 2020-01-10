@@ -11,6 +11,8 @@ use SimpleJWT\InvalidTokenException;
 final class PhabricatorGoogleIAPAuthProvider
   extends PhabricatorAuthProvider {
 
+  const IAP_HEADER = 'x-goog-iap-jwt-assertion';
+
   protected $adapter;
 
   /**
@@ -50,7 +52,7 @@ final class PhabricatorGoogleIAPAuthProvider
     $response = null;
     try {
       $request = $controller->getRequest();
-      $email = $this->verifyJWT($request->getHTTPHeader("x-goog-iap-jwt-assertion"));
+      $email = $this->verifyJWT($request->getHTTPHeader(IAP_HEADER));
       return array($this->loadOrCreateAccount($email), $response);
     } catch (Exception $ex) {
       $response = $controller->buildProviderErrorResponse($this, $ex->getMessage());
@@ -95,7 +97,7 @@ final class PhabricatorGoogleIAPAuthProvider
   }
 
   public function canAuthRequest(AphrontRequest $request) {
-    return $request->getHTTPHeader("x-goog-iap-jwt-assertion");
+    return $request->getHTTPHeader(IAP_HEADER);
   }
 
 }
