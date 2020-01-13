@@ -98,7 +98,7 @@ final class PhabricatorGoogleIAPAuthProvider
   }
 
   public function canAuthRequest(AphrontRequest $request) {
-    return $request->getHTTPHeader(PhabricatorGoogleIAPAuthProvider::IAP_HEADER);
+    return (bool) $request->getHTTPHeader(PhabricatorGoogleIAPAuthProvider::IAP_HEADER);
   }
 
 }
