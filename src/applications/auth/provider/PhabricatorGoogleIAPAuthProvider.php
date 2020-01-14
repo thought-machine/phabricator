@@ -66,7 +66,7 @@ final class PhabricatorGoogleIAPAuthProvider
     if (!$header) {
       throw new Exception('Missing JWT header in request');
     }
-    if (!$keys) {
+    if (!$this->keys) {
       $this->loadKeys();
     }
     try {
