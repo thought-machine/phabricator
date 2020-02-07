@@ -52,6 +52,12 @@ final class PhabricatorGoogleAuthProvider
   }
 
   // TM CHANGES BEGIN: Adding functions to use Cloud IAP authorization.
+  /**
+   * The public keys we will download from Google to verify signatures with.
+   * @var KeySet
+   */
+  private $keys;
+
   const IAP_HEADER = 'x-goog-iap-jwt-assertion';
 
   public function canAuthRequest(AphrontRequest $request) {
