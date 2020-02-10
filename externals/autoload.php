@@ -4,7 +4,7 @@ spl_autoload_register(function ($class) {
 
   $prefix = 'SimpleJWT\\';
 
-  $base_dir = __DIR__ . '/SimpleJWT';
+  $base_dir = __DIR__ . '/SimpleJWT/';
 
   $len = strlen($prefix);
   if (strncmp($prefix, $class, $len) !== 0) {
