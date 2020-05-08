@@ -9,7 +9,6 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
-    'AphrontResponse' => 'aphront/response/AphrontResponse.php',
     'CelerityStaticResourceResponse' => 'applications/celerity/CelerityStaticResourceResponse.php',
     'PhabricatorAuthProvider' => 'applications/auth/provider/PhabricatorAuthProvider.php',
     'PhabricatorAuthStartController' => 'applications/auth/controller/PhabricatorAuthStartController.php',
@@ -21,7 +20,6 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
-    'AphrontResponse' => 'Phobject',
     'CelerityStaticResourceResponse' => 'Phobject',
     'PhabricatorAuthProvider' => 'Phobject',
     'PhabricatorAuthStartController' => 'PhabricatorAuthController',
