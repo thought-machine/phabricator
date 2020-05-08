@@ -101,7 +101,7 @@ final class PhabricatorGoogleAuthProvider
     if ($jwt->getClaim('iss') != 'https://cloud.google.com/iap') {
       throw new Exception('Invalid issuer for JWT');
     }
-    return $jwt->getClaim('email');
+    return $jwt;
   }
 
   // Downloads the public keys that we'll verify the JWT with.
