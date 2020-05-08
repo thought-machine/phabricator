@@ -73,18 +73,20 @@ final class PhabricatorGoogleAuthProvider
       return parent::processLoginRequest($controller);
     }
     try {
-      $email = $this->verifyJWT($request->getHTTPHeader(
+      $jwt = $this->verifyJWT($request->getHTTPHeader(
           PhabricatorGoogleAuthProvider::IAP_HEADER));
-      $this->getAdapter()->setIapAccountData($email);
-      return array($this->loadOrCreateAccount($email), null);
+      $email = $jwt->getClaim('email');
+      $userid = $jwt->getClaim('sub');
+      $this->getAdapter()->setIapAccountData($email, $userid);
+      return array($this->newExternalAccountForIdentifiers($this->getAdapter()->getAccountIdentifiers()));
     } catch (Exception $ex) {
       $response = $controller->buildProviderErrorResponse($this, $ex->getMessage());
       return array(null, $response);
     }
   }
 
-  // Verifies the signed JWT header. Returns the email address on success.
-  public function verifyJWT($header) {
+  // Verifies the signed JWT header. Returns the token on success.
+  private function verifyJWT($header) {
     if (!$header) {
       throw new Exception('Missing JWT header in request');
     }
