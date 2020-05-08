@@ -72,13 +72,15 @@ final class PhabricatorGoogleAuthProvider
       // Normal login through OAuth
       return parent::processLoginRequest($controller);
     }
+    $response = null;
     try {
       $jwt = $this->verifyJWT($request->getHTTPHeader(
           PhabricatorGoogleAuthProvider::IAP_HEADER));
       $email = $jwt->getClaim('email');
       $userid = $jwt->getClaim('sub');
       $this->getAdapter()->setIapAccountData($email, $userid);
-      return array($this->newExternalAccountForIdentifiers($this->getAdapter()->getAccountIdentifiers()));
+      $account = $this->newExternalAccountForIdentifiers($this->getAdapter()->getAccountIdentifiers());
+      return array($account, $response);
     } catch (Exception $ex) {
       $response = $controller->buildProviderErrorResponse($this, $ex->getMessage());
       return array(null, $response);
