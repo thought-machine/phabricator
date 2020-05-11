@@ -30,13 +30,8 @@ make up your own mind.
 Changes are marked in the source clearly and a quick search for "TM CHANGES"
 should find them.
 
- * Aphront
-   * AphrontResponse is extended to allow TM SecOps to embed `frameable` pages.
  * Auth
    * Modified the Google auth provider to support Cloud IAP.
- * Celerity
-   * Fix a typo in CelerityStaticResourceResponse that means `frameable`
-     does not work.
  * Externals
    * Added SimpleJWT for use with Cloud IAP auth.
  * People
