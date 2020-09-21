@@ -30,6 +30,8 @@ make up your own mind.
 Changes are marked in the source clearly and a quick search for "TM CHANGES"
 should find them.
 
+ * Aphlict
+   * Added a mode to allow it to run in the foreground without debug messages.
  * Auth
    * Modified the Google auth provider to support Cloud IAP.
  * Externals
