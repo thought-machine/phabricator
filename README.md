@@ -57,3 +57,14 @@ Add `tmphabricator` to your Phabricator `load-libraries`:
     "tmphabricator/src"
   ],
 ```
+
+# Generating the library map
+
+When developing a new module it needs to be referenced in some auto-generated files. To
+generate these:
+
+1. clone https://github.com/phacility/phabricator to the same location as tmphabricator
+1. navigate into the tmphabricator directory
+1. run `arc liberate`
+
+More information can be found [here](https://secure.phabricator.com/book/phabcontrib/article/adding_new_classes/#initializing-a-library)

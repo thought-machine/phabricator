@@ -9,7 +9,7 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
-    'CelerityStaticResourceResponse' => 'applications/celerity/CelerityStaticResourceResponse.php',
+    'PhabricatorAphlictManagementForegroundWorkflow' => 'applications/aphlict/management/PhabricatorAphlictManagementForegroundWorkflow.php',
     'PhabricatorAuthProvider' => 'applications/auth/provider/PhabricatorAuthProvider.php',
     'PhabricatorAuthStartController' => 'applications/auth/controller/PhabricatorAuthStartController.php',
     'PhabricatorGoogleAuthProvider' => 'applications/auth/provider/PhabricatorGoogleAuthProvider.php',
@@ -20,7 +20,7 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
-    'CelerityStaticResourceResponse' => 'Phobject',
+    'PhabricatorAphlictManagementForegroundWorkflow' => 'PhabricatorAphlictManagementWorkflow',
     'PhabricatorAuthProvider' => 'Phobject',
     'PhabricatorAuthStartController' => 'PhabricatorAuthController',
     'PhabricatorGoogleAuthProvider' => 'PhabricatorOAuth2AuthProvider',
