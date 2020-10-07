@@ -48,11 +48,21 @@ should find them.
 
 # Installation Instructions
 
+Clone both the Phabricator repository and this one so that the two local copies
+are in sibling directories:
+
 ```
+git clone https://secure.phabricator.com/source/phabricator.git
 git clone https://github.com/thought-machine/phabricator tmphabricator
+
+ls -1
+# phabricator/
+# tmphabricator/
 ```
 
-Add `tmphabricator` to your Phabricator `load-libraries`:
+In the `.arcconfig` file in the Phabricator repository, add the path to this
+repository's `src` directory *relative to the common root directory* to
+[`load-libraries`](https://secure.phabricator.com/book/phabcontrib/article/adding_new_classes/#linking-with-phabricator):
 
 ```
   "load-libraries": [
@@ -62,11 +72,19 @@ Add `tmphabricator` to your Phabricator `load-libraries`:
 
 # Generating the library map
 
-When developing a new module it needs to be referenced in some auto-generated files. To
-generate these:
+The modules in this repository need to be referenced in some auto-generated
+files. To generate them, ensure you have followed the installation instructions
+above, then run `arc liberate` from the root of this repository:
 
-1. clone https://github.com/phacility/phabricator to the same location as tmphabricator
-1. navigate into the tmphabricator directory
-1. run `arc liberate`
+```
+cd tmphabricator
+arc liberate
+# Should output "Done."
+```
+
+**NOTE:** `arc liberate` automatically attempts to build `libxhpast` in
+`/opt/libphutil/support/xhpast/` if it detects that it doesn't already exist.
+This will fail unless `arc liberate` is run as root. It should only be necessary
+to do this once, usually when you run `arc liberate` for the first time.
 
 More information can be found [here](https://secure.phabricator.com/book/phabcontrib/article/adding_new_classes/#initializing-a-library)
