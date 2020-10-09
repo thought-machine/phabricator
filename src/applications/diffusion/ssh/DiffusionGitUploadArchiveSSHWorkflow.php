@@ -55,14 +55,6 @@ final class DiffusionGitUploadArchiveSSHWorkflow
       $log->didStartSession($command);
     }
 
-    if (PhabricatorEnv::getEnvConfig('phabricator.show-prototypes')) {
-      $protocol = new DiffusionGitUploadPackWireProtocol();
-      if ($log) {
-        $protocol->setProtocolLog($log);
-      }
-      $this->setWireProtocol($protocol);
-    }
-
     $err = $this->newPassthruCommand()
       ->setIOChannel($this->getIOChannel())
       ->setCommandChannelFromExecFuture($future)
