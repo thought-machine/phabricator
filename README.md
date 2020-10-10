@@ -32,8 +32,6 @@ should find them.
 
  * Aphlict
    * Added a mode to allow it to run in the foreground without debug messages.
- * Applications
-   * Added a handler for `git upload-archive` to Diffusion.
  * Auth
    * Modified the Google auth provider to support Cloud IAP.
  * Externals
