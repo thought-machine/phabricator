@@ -9,7 +9,6 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
-    'DiffusionGitUploadArchiveSSHWorkflow' => 'applications/diffusion/ssh/DiffusionGitUploadArchiveSSHWorkflow.php',
     'PhabricatorAphlictManagementForegroundWorkflow' => 'applications/aphlict/management/PhabricatorAphlictManagementForegroundWorkflow.php',
     'PhabricatorAuthProvider' => 'applications/auth/provider/PhabricatorAuthProvider.php',
     'PhabricatorAuthStartController' => 'applications/auth/controller/PhabricatorAuthStartController.php',
@@ -21,7 +20,6 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
-    'DiffusionGitUploadArchiveSSHWorkflow' => 'DiffusionGitSSHWorkflow',
     'PhabricatorAphlictManagementForegroundWorkflow' => 'PhabricatorAphlictManagementWorkflow',
     'PhabricatorAuthProvider' => 'Phobject',
     'PhabricatorAuthStartController' => 'PhabricatorAuthController',
