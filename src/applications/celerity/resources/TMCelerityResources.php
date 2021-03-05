@@ -3,7 +3,7 @@
 final class TMCelerityResources extends CelerityResourcesOnDisk {
 
   public function getName(): string {
-    return 'phlab';
+    return 'tmphabricator';
   }
 
   public function getPathToMap(): string {
@@ -15,7 +15,7 @@ final class TMCelerityResources extends CelerityResourcesOnDisk {
   }
 
   private function getPath(string $file): string {
-    $root = dirname(phutil_get_library_root('phlab'));
+    $root = dirname(phutil_get_library_root('tmphabricator'));
     return $root.'/'.$file;
   }
 
