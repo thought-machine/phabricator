@@ -9,6 +9,7 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'applications/diffusion/ssh/DiffusionGitUploadArchiveSSHWorkflow.php',
     'PhabricatorAphlictManagementForegroundWorkflow' => 'applications/aphlict/management/PhabricatorAphlictManagementForegroundWorkflow.php',
     'PhabricatorAuthProvider' => 'applications/auth/provider/PhabricatorAuthProvider.php',
@@ -17,10 +18,12 @@ phutil_register_library_map(array(
     'PhabricatorProjectBoardViewController' => 'applications/project/controller/PhabricatorProjectBoardViewController.php',
     'PhutilGoogleAuthAdapter' => 'applications/auth/adapter/PhutilGoogleAuthAdapter.php',
     'ProjectBoardTaskCard' => 'applications/project/view/ProjectBoardTaskCard.php',
+    'TMCelerityResources' => 'applications/celerity/resources/TMCelerityResources.php',
     'UserQueryConduitAPIMethod' => 'applications/people/conduit/UserQueryConduitAPIMethod.php',
   ),
   'function' => array(),
   'xmap' => array(
+    'DifferentialRevisionViewController' => 'DifferentialController',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'DiffusionGitSSHWorkflow',
     'PhabricatorAphlictManagementForegroundWorkflow' => 'PhabricatorAphlictManagementWorkflow',
     'PhabricatorAuthProvider' => 'Phobject',
@@ -29,6 +32,7 @@ phutil_register_library_map(array(
     'PhabricatorProjectBoardViewController' => 'PhabricatorProjectBoardController',
     'PhutilGoogleAuthAdapter' => 'PhutilOAuthAuthAdapter',
     'ProjectBoardTaskCard' => 'Phobject',
+    'TMCelerityResources' => 'CelerityResourcesOnDisk',
     'UserQueryConduitAPIMethod' => 'UserConduitAPIMethod',
   ),
 ));
