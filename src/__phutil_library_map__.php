@@ -37,7 +37,7 @@ phutil_register_library_map(array(
     'PhabricatorProjectBoardViewController' => 'PhabricatorProjectBoardController',
     'PhabricatorPrometheusApplication' => 'PhabricatorApplication',
     'PhabricatorPrometheusMetric' => 'Phobject',
-    'PhabricatorPrometheusMetricGauge' => 'PhabricatorPrometueusMetric',
+    'PhabricatorPrometheusMetricGauge' => 'PhabricatorPrometheusMetric',
     'PhabricatorPrometheusMetricsController' => 'PhabricatorController',
     'PhabricatorUpPrometheusMetric' => 'PhabricatorPrometheusMetricGauge',
     'PhutilGoogleAuthAdapter' => 'PhutilOAuthAuthAdapter',

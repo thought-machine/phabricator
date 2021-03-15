@@ -25,13 +25,7 @@ abstract class PhabricatorPrometheusMetric extends Phobject {
 
   abstract public function observe(float $value, array $labels): void;
 
-  final public function register(CollectorRegistry $registry): void {
-    $this->metric = $registry->registerGauge(
-      self::METRIC_NAMESPACE,
-      $this->getName(),
-      $this->getHelp(),
-      $this->getLabels());
-  }
+  abstract public function register(CollectorRegistry $registry): void;
 
   final public function observeAll(): void{
     foreach ($this->getValues() as $data) {

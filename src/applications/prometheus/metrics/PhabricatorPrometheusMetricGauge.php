@@ -7,7 +7,15 @@ use Prometheus\CollectorRegistry;
  */
 abstract class PhabricatorPrometheusMetricGauge extends PhabricatorPrometheusMetric {
 
+  final public function register(CollectorRegistry $registry): void {
+    $this->metric = $registry->getOrRegisterGauge(
+      self::METRIC_NAMESPACE,
+      $this->getName(),
+      $this->getHelp(),
+      $this->getLabels());
+  }
+  
   final private function observe(float $value, array $labels): void {
-    $metric->set($value, $labels);
+    $this->metric->set($value, $labels);
   }
 }
