@@ -72,6 +72,10 @@ repository's `src` directory *relative to the common root directory* to
   ],
 ```
 
+# Dependencies
+
+We use [composer](https://getcomposer.org/) to manage external dependencies. [This](https://getcomposer.org/doc/01-basic-usage.md) page gives more information on how to use it.
+
 # Generating the library map
 
 The modules in this repository need to be referenced in some auto-generated
