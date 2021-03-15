@@ -1,7 +1,6 @@
 <?php
 
 // TM CHANGES BEGIN: Adding JWT imports.
-require_once(__DIR__.'/../../../../externals/autoload.php');
 
 use SimpleJWT\JWT;
 use SimpleJWT\Keys\KeySet;
