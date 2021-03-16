@@ -15,7 +15,7 @@ abstract class PhabricatorPrometheusMetricGauge extends PhabricatorPrometheusMet
       $this->getLabels());
   }
 
-  final private function observe(float $value, array $labels): void {
+  final public function observe(float $value, array $labels): void {
     $this->metric->set($value, $labels);
   }
 }
