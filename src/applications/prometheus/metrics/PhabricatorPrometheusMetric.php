@@ -12,8 +12,8 @@ abstract class PhabricatorPrometheusMetric extends Phobject {
 
   abstract public function getName(): string;
 
-  public function getHelp(): ?string {
-    return null;
+  public function getHelp(): string {
+    return '';
   }
 
   public function getLabels(): array {
