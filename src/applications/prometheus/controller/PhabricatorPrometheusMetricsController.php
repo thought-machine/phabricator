@@ -23,8 +23,8 @@ final class PhabricatorPrometheusMetricsController extends PhabricatorController
     $metrics  = PhabricatorPrometheusMetric::getAllMetrics();
 
     foreach ($metrics as $metric) {
-      $m = $metric->register($registry);
-      $m->observeAll();
+      $metric->register($registry);
+      $metric->observeAll();
     }
 
     $this->registry = $registry;
