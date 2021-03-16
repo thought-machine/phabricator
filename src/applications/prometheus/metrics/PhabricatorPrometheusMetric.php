@@ -8,7 +8,7 @@ use Prometheus\CollectorRegistry;
 abstract class PhabricatorPrometheusMetric extends Phobject {
   const METRIC_NAMESPACE = 'phabricator';
 
-  private $metric;
+  protected $metric;
 
   abstract public function getName(): string;
 
