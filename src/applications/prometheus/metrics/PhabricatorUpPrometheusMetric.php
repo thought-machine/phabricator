@@ -8,4 +8,8 @@ final class PhabricatorUpPrometheusMetric extends PhabricatorPrometheusMetricGau
   public function getValues(): array {
     return [1];
   }
+
+  public function getHelp(): string {
+    return 'A gauge which indicates whether phabricator is up or not';
+  }
 }
