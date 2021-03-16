@@ -36,8 +36,15 @@ should find them.
    * Added a handler for `git upload-archive` to Diffusion.
  * Auth
    * Modified the Google auth provider to support Cloud IAP.
- * Externals
-   * Added SimpleJWT for use with Cloud IAP auth.
+ * Celerity
+   * Added a TMCelerity class for custom celerity resources eg. javascript.
+ * rsrc - js
+   * Added safe landing js which provides a visual queue if an accepted revision hasn't passed CI.
+ * Daemon
+   * Added prometheus gauge to track the number of phabricator daemons.
+ * Prometheus
+   * Added prometheus metric infrastructure and application.
+   * Added phabricator up metric to indicate whether phabricator is up or not.
  * People
    * *Change* to UserQuery conduit method
      * We always return the user's email as it is not private information in
