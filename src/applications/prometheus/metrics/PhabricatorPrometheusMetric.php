@@ -79,4 +79,12 @@ abstract class PhabricatorPrometheusMetric extends Phobject {
       ->setUniqueMethod('getName')
       ->execute();
   }
+
+  final public static function getMetric(string $name): ?PhabricatorPrometheusMetric {
+    $metrics = (new PhutilClassMapQuery())
+      ->setAncestorClass(__CLASS__)
+      ->setUniqueMethod('getName')
+      ->execute();
+    return $metrics->get(name) ?? null;
+  }
 }
