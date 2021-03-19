@@ -30,7 +30,7 @@ function getEnabledLandRevisionButtons() {
 if (isBuildStatusPassed()) {
   getEnabledLandRevisionButtons().forEach((landRevisionButton) => {
     landRevisionButton.style.backgroundColor = '#BFB';
-    landRevisionButton.firstChild.lastChild.nodeValue = 'Safely land';
+    landRevisionButton.firstChild.lastChild.nodeValue = 'Another happy landing';
   });
 } else {
   getEnabledLandRevisionButtons().forEach((landRevisionButton) => {
