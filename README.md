@@ -42,6 +42,11 @@ should find them.
    * Added safe landing js which provides a visual queue if an accepted revision hasn't passed CI.
  * Daemon
    * Added prometheus gauge to track the number of phabricator daemons.
+ * Differential
+   * Modified the revision controller to include safe landing js
+ * Diffusion
+   * Added Git upload archive workflow
+   * Added prometheus metrics to track git operation failures eg. interupted write errors
  * Prometheus
    * Added prometheus metric infrastructure and application.
    * Added phabricator up metric to indicate whether phabricator is up or not.
