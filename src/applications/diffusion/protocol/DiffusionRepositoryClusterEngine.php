@@ -192,7 +192,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           $stage,
           'read_lock_timeout'
         ]
-      )
+      );
       // TM CHANGES END
       throw new PhutilProxyException(
         pht(
@@ -274,7 +274,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
             $stage,
             'load_cluster_service_failure'
           ]
-        )
+        );
         // TM CHANGES END
         throw new Exception(pht('Failed to load repository cluster service.'));
       }
@@ -295,7 +295,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
             $stage,
             'ambiguous_leader_failure'
           ]
-        )
+        );
         // TM CHANGES END
         throw new Exception(
           pht(
@@ -316,7 +316,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
             $stage,
             'device_not_bound_failure'
           ]
-        )
+        );
         // TM CHANGES END
         throw new Exception(
           pht(
@@ -350,7 +350,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $stage,
         'success'
       ]
-    )
+    );
     // TM CHANGES END
     return $result_version;
   }
@@ -442,7 +442,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           $stage,
           'write_lock_timeout'
         ]
-      )
+      );
       // TM CHANGES END
       throw new PhutilProxyException(
         pht(
@@ -469,7 +469,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           $stage,
           'write_interupted_failure'
         ]
-      )
+      );
       // TM CHANGES END
       throw new Exception(
         pht(
@@ -523,7 +523,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $stage,
         'success'
       ]
-    )
+    );
     // TM CHANGES END
   }
 
@@ -593,7 +593,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           $stage,
           'lock_not_held_falure'
         ]
-      )
+      );
       // TM CHANGES END
       throw new Exception(
         pht(
@@ -694,7 +694,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           $stage,
           'repository_frozen_falure'
         ]
-      )
+      );
       // TM CHANGES END
       throw new Exception(
         pht(
@@ -726,7 +726,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $stage,
         'success'
       ]
-    )
+    );
     // TM CHANGES END
   }
 
