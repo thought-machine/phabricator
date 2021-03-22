@@ -187,7 +187,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $sync_metric->observe(
         1,
         [
-          $repossitory->getDisplayName(),
+          $repository->getDisplayName(),
           $device->getName(),
           $stage,
           'read_lock_timeout'
@@ -269,7 +269,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $sync_metric->observe(
           1,
           [
-            $repossitory->getDisplayName(),
+            $repository->getDisplayName(),
             $device->getName(),
             $stage,
             'load_cluster_service_failure'
@@ -290,7 +290,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $sync_metric->observe(
           1,
           [
-            $repossitory->getDisplayName(),
+            $repository->getDisplayName(),
             $device->getName(),
             $stage,
             'ambiguous_leader_failure'
@@ -311,7 +311,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $sync_metric->observe(
           1,
           [
-            $repossitory->getDisplayName(),
+            $repository->getDisplayName(),
             $device->getName(),
             $stage,
             'device_not_bound_failure'
@@ -345,7 +345,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     $sync_metric->observe(
       1,
       [
-        $repossitory->getDisplayName(),
+        $repository->getDisplayName(),
         $device->getName(),
         $stage,
         'success'
@@ -437,7 +437,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $sync_metric->observe(
         1,
         [
-          $repossitory->getDisplayName(),
+          $repository->getDisplayName(),
           $device->getName(),
           $stage,
           'write_lock_timeout'
@@ -464,7 +464,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $sync_metric->observe(
         1,
         [
-          $repossitory->getDisplayName(),
+          $repository->getDisplayName(),
           $device->getName(),
           $stage,
           'write_interupted_failure'
@@ -518,7 +518,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     $sync_metric->observe(
       1,
       [
-        $repossitory->getDisplayName(),
+        $repository->getDisplayName(),
         $device->getName(),
         $stage,
         'success'
@@ -588,7 +588,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $sync_metric->observe(
         1,
         [
-          $repossitory->getDisplayName(),
+          $repository->getDisplayName(),
           $device->getName(),
           $stage,
           'lock_not_held_falure'
@@ -689,7 +689,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $sync_metric->observe(
         1,
         [
-          $repossitory->getDisplayName(),
+          $repository->getDisplayName(),
           $device->getName(),
           $stage,
           'repository_frozen_falure'
@@ -721,7 +721,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     $sync_metric->observe(
       1,
       [
-        $repossitory->getDisplayName(),
+        $repository->getDisplayName(),
         $device->getName(),
         $stage,
         'success'
