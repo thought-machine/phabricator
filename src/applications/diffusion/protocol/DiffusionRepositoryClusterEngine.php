@@ -44,6 +44,12 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     return $this;
   }
 
+  // TM CHANGES fetching sync metric
+  private function getSyncMetric() {
+    return PhabricatorPrometheusMetric::getMetric('repo_sync_total');
+  }
+  // TM CHANGES END
+
 
 /* -(  Cluster Synchronization  )-------------------------------------------- */
 
@@ -133,6 +139,12 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
    * @task sync
    */
   public function synchronizeWorkingCopyBeforeRead() {
+
+    // TM CHANGES
+    $stage = 'sync_before_read';
+    $sync_metric = $this->getSyncMetric();
+    // TM CHANGES END
+
     if (!$this->shouldEnableSynchronization(true)) {
       return;
     }
@@ -171,6 +183,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
             'Acquired read lock immediately.'));
       }
     } catch (PhutilLockException $ex) {
+      // TM CHANGES
+      $sync_metric->observe(
+        1,
+        [
+          $repossitory->getDisplayName(),
+          $device->getName(),
+          $stage,
+          'read_lock_timeout'
+        ]
+      );
+      // TM CHANGES END
       throw new PhutilProxyException(
         pht(
           'Failed to acquire read lock after waiting %s second(s). You '.
@@ -242,6 +265,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
       $service = $repository->loadAlmanacService();
       if (!$service) {
+        // TM CHANGES
+        $sync_metric->observe(
+          1,
+          [
+            $repossitory->getDisplayName(),
+            $device->getName(),
+            $stage,
+            'load_cluster_service_failure'
+          ]
+        );
+        // TM CHANGES END
         throw new Exception(pht('Failed to load repository cluster service.'));
       }
 
@@ -252,6 +286,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       }
 
       if (count($device_map) > 1) {
+        // TM CHANGES
+        $sync_metric->observe(
+          1,
+          [
+            $repossitory->getDisplayName(),
+            $device->getName(),
+            $stage,
+            'ambiguous_leader_failure'
+          ]
+        );
+        // TM CHANGES END
         throw new Exception(
           pht(
             'Repository "%s" exists on more than one device, but no device '.
@@ -262,6 +307,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       }
 
       if (empty($device_map[$device->getPHID()])) {
+        // TM CHANGES
+        $sync_metric->observe(
+          1,
+          [
+            $repossitory->getDisplayName(),
+            $device->getName(),
+            $stage,
+            'device_not_bound_failure'
+          ]
+        );
+        // TM CHANGES END
         throw new Exception(
           pht(
             'Repository "%s" is being synchronized on device "%s", but '.
@@ -285,6 +341,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
     $read_lock->unlock();
 
+    // TM CHANGES
+    $sync_metric->observe(
+      1,
+      [
+        $repossitory->getDisplayName(),
+        $device->getName(),
+        $stage,
+        'success'
+      ]
+    );
+    // TM CHANGES END
     return $result_version;
   }
 
@@ -293,6 +360,12 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
    * @task sync
    */
   public function synchronizeWorkingCopyBeforeWrite() {
+
+    // TM CHANGES
+    $stage = 'sync_before_write';
+    $sync_metric = $this->getSyncMetric();
+    // TM CHANGES END
+
     if (!$this->shouldEnableSynchronization(true)) {
       return;
     }
@@ -360,6 +433,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
             'Acquired write lock immediately.'));
       }
     } catch (PhutilLockException $ex) {
+      // TM CHANGES
+      $sync_metric->observe(
+        1,
+        [
+          $repossitory->getDisplayName(),
+          $device->getName(),
+          $stage,
+          'write_lock_timeout'
+        ]
+      );
+      // TM CHANGES END
       throw new PhutilProxyException(
         pht(
           'Failed to acquire write lock after waiting %s second(s). You '.
@@ -376,19 +460,23 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         continue;
       }
 
-      // TM CHANGES BEGIN: Incrementing repo interupted metric
+      // TM CHANGES
+      $sync_metric->observe(
+        1,
+        [
+          $repossitory->getDisplayName(),
+          $device->getName(),
+          $stage,
+          'write_interupted_failure'
+        ]
+      );
+      // TM CHANGES END
       throw new Exception(
         pht(
           'A previous write to this repository was interrupted; refusing '.
           'new writes. This issue requires operator intervention to resolve, '.
           'see "Write Interruptions" in the "Cluster: Repositories" in the '.
           'documentation for instructions.'));
-      $metric  = PhabricatorPrometheusMetric::getMetric('write_interupt_total');
-      if (!is_null($metric)) {
-        $metric->observe(1, [$device->getName()]);
-      }
-      // TM CHANGES END
-
     }
 
     $read_wait_start = microtime(true);
@@ -426,6 +514,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $log->writeClusterEngineLogProperty('writeWait', $write_wait);
       $log->writeClusterEngineLogProperty('readWait', $read_wait);
     }
+    // TM CHANGES
+    $sync_metric->observe(
+      1,
+      [
+        $repossitory->getDisplayName(),
+        $device->getName(),
+        $stage,
+        'success'
+      ]
+    );
+    // TM CHANGES END
   }
 
 
@@ -474,11 +573,28 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
    * @task sync
    */
   public function synchronizeWorkingCopyAfterWrite() {
+
+    // TM CHANGES
+    $stage = 'sync_after_write';
+    $sync_metric = $this->getSyncMetric();
+    // TM CHANGES END
+
     if (!$this->shouldEnableSynchronization(true)) {
       return;
     }
 
     if (!$this->clusterWriteLock) {
+      // TM CHANGES
+      $sync_metric->observe(
+        1,
+        [
+          $repossitory->getDisplayName(),
+          $device->getName(),
+          $stage,
+          'lock_not_held_falure'
+        ]
+      );
+      // TM CHANGES END
       throw new Exception(
         pht(
           'Trying to synchronize after write, but not holding a write '.
@@ -569,6 +685,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       }
       $this->logLine(pht('Released cluster write lock.'));
     } else {
+      // TM CHANGES
+      $sync_metric->observe(
+        1,
+        [
+          $repossitory->getDisplayName(),
+          $device->getName(),
+          $stage,
+          'repository_frozen_falure'
+        ]
+      );
+      // TM CHANGES END
       throw new Exception(
         pht(
           'Failed to reconnect to master database and release held write '.
@@ -590,6 +717,17 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
     $this->clusterWriteLock = null;
     $this->clusterWriteOwner = null;
+    // TM CHANGES
+    $sync_metric->observe(
+      1,
+      [
+        $repossitory->getDisplayName(),
+        $device->getName(),
+        $stage,
+        'success'
+      ]
+    );
+    // TM CHANGES END
   }
 
 
