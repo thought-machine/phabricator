@@ -46,7 +46,7 @@ should find them.
    * Modified the revision controller to include safe landing js
  * Diffusion
    * Added Git upload archive workflow
-   * Added prometheus metrics to track git operation failures eg. interupted write errors
+   * Added prometheus metrics to track cluster sync successes and failures
  * Prometheus
    * Added prometheus metric infrastructure and application.
    * Added phabricator up metric to indicate whether phabricator is up or not.
