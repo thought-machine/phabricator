@@ -8,6 +8,7 @@
  * @task internal Internals
  */
 final class DiffusionRepositoryClusterEngine extends Phobject {
+  const METRIC_NAMESPACE = 'phabricator';
 
   private $repository;
   private $viewer;
@@ -16,6 +17,21 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
   private $clusterWriteLock;
   private $clusterWriteVersion;
   private $clusterWriteOwner;
+
+  // TM CHANGES fetching sync metric
+  private $syncMetric;
+
+  function __construct() {
+    parent::__construct();
+    $registry = PhabricatorPrometheusApplication::getRegistry();
+    $self->$syncMetric = $registry->getOrRegisterCounter(
+      self::METRIC_NAMESPACE,
+      'repo_sync_total',
+      'The number of git sync operations',
+      ['repo', 'stage', 'category']
+    );
+  }
+  // TM CHANGES END
 
 
 /* -(  Configuring Synchronization  )---------------------------------------- */
@@ -44,11 +60,6 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     return $this;
   }
 
-  // TM CHANGES fetching sync metric
-  private function getSyncMetric() {
-    return PhabricatorPrometheusMetric::getMetric('repo_sync_total');
-  }
-  // TM CHANGES END
 
 
 /* -(  Cluster Synchronization  )-------------------------------------------- */
@@ -142,7 +153,6 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
     // TM CHANGES
     $stage = 'sync_before_read';
-    $sync_metric = $this->getSyncMetric();
     // TM CHANGES END
 
     if (!$this->shouldEnableSynchronization(true)) {
@@ -184,13 +194,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       }
     } catch (PhutilLockException $ex) {
       // TM CHANGES
-      $sync_metric->observe(
-        1,
+      $self->$syncMetric->inc(
         [
-          $repository->getDisplayName(),
-          $device->getName(),
-          $stage,
-          'read_lock_timeout'
+          'repo' => $repository->getDisplayName(),
+          'stage' => $stage,
+          'category' => 'read_lock_timeout'
         ]
       );
       // TM CHANGES END
@@ -266,13 +274,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $service = $repository->loadAlmanacService();
       if (!$service) {
         // TM CHANGES
-        $sync_metric->observe(
-          1,
+        $self->$syncMetric->inc(
           [
-            $repository->getDisplayName(),
-            $device->getName(),
-            $stage,
-            'load_cluster_service_failure'
+            'repo' => $repository->getDisplayName(),
+            'stage' => $stage,
+            'category' => 'load_cluster_service_failure'
           ]
         );
         // TM CHANGES END
@@ -287,13 +293,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
       if (count($device_map) > 1) {
         // TM CHANGES
-        $sync_metric->observe(
-          1,
+        $self->$syncMetric->inc(
           [
-            $repository->getDisplayName(),
-            $device->getName(),
-            $stage,
-            'ambiguous_leader_failure'
+            'repo' => $repository->getDisplayName(),
+            'stage' => $stage,
+            'category' => 'ambiguous_leader_failure'
           ]
         );
         // TM CHANGES END
@@ -308,13 +312,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
       if (empty($device_map[$device->getPHID()])) {
         // TM CHANGES
-        $sync_metric->observe(
-          1,
+        $self->$syncMetric->inc(
           [
-            $repository->getDisplayName(),
-            $device->getName(),
-            $stage,
-            'device_not_bound_failure'
+            'repo' => $repository->getDisplayName(),
+            'stage' => $stage,
+            'category' => 'device_not_bound_failure'
           ]
         );
         // TM CHANGES END
@@ -342,13 +344,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     $read_lock->unlock();
 
     // TM CHANGES
-    $sync_metric->observe(
-      1,
+    $self->$syncMetric->inc(
       [
-        $repository->getDisplayName(),
-        $device->getName(),
-        $stage,
-        'success'
+        'repo' => $repository->getDisplayName(),
+        'stage' => $stage,
+        'category' =>   'success'
       ]
     );
     // TM CHANGES END
@@ -363,7 +363,6 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
     // TM CHANGES
     $stage = 'sync_before_write';
-    $sync_metric = $this->getSyncMetric();
     // TM CHANGES END
 
     if (!$this->shouldEnableSynchronization(true)) {
@@ -434,13 +433,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       }
     } catch (PhutilLockException $ex) {
       // TM CHANGES
-      $sync_metric->observe(
-        1,
+      $self->$syncMetric->inc(
         [
-          $repository->getDisplayName(),
-          $device->getName(),
-          $stage,
-          'write_lock_timeout'
+          'repo' => $repository->getDisplayName(),
+          'stage' => $stage,
+          'category' => 'write_lock_timeout'
         ]
       );
       // TM CHANGES END
@@ -461,13 +458,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       }
 
       // TM CHANGES
-      $sync_metric->observe(
-        1,
+      $self->$syncMetric->inc(
         [
-          $repository->getDisplayName(),
-          $device->getName(),
-          $stage,
-          'write_interupted_failure'
+          'repo' => $repository->getDisplayName(),
+          'stage' => $stage,
+          'category' => 'write_interupted_failure'
         ]
       );
       // TM CHANGES END
@@ -515,13 +510,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $log->writeClusterEngineLogProperty('readWait', $read_wait);
     }
     // TM CHANGES
-    $sync_metric->observe(
-      1,
+    $self->$syncMetric->inc(
       [
-        $repository->getDisplayName(),
-        $device->getName(),
-        $stage,
-        'success'
+        'repo' => $repository->getDisplayName(),
+        'stage' => $stage,
+        'category' =>   'success'
       ]
     );
     // TM CHANGES END
@@ -576,7 +569,6 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
     // TM CHANGES
     $stage = 'sync_after_write';
-    $sync_metric = $this->getSyncMetric();
     // TM CHANGES END
 
     if (!$this->shouldEnableSynchronization(true)) {
@@ -585,13 +577,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
     if (!$this->clusterWriteLock) {
       // TM CHANGES
-      $sync_metric->observe(
-        1,
+      $self->$syncMetric->inc(
         [
-          $repository->getDisplayName(),
-          $device->getName(),
-          $stage,
-          'lock_not_held_falure'
+          'repo' => $repository->getDisplayName(),
+          'stage' => $stage,
+          'category' => 'lock_not_held_falure'
         ]
       );
       // TM CHANGES END
@@ -686,13 +676,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $this->logLine(pht('Released cluster write lock.'));
     } else {
       // TM CHANGES
-      $sync_metric->observe(
-        1,
+      $self->$syncMetric->inc(
         [
-          $repository->getDisplayName(),
-          $device->getName(),
-          $stage,
-          'repository_frozen_falure'
+          'repo' => $repository->getDisplayName(),
+          'stage' => $stage,
+          'category' => 'repository_frozen_falure'
         ]
       );
       // TM CHANGES END
@@ -718,13 +706,11 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     $this->clusterWriteLock = null;
     $this->clusterWriteOwner = null;
     // TM CHANGES
-    $sync_metric->observe(
-      1,
+    $self->$syncMetric->inc(
       [
-        $repository->getDisplayName(),
-        $device->getName(),
-        $stage,
-        'success'
+        'repo' => $repository->getDisplayName(),
+        'stage' => $stage,
+        'category' =>   'success'
       ]
     );
     // TM CHANGES END

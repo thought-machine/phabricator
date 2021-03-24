@@ -1,6 +1,22 @@
 <?php
 
+use Prometheus\CollectorRegistry;
+use Prometheus\Storage\InMemory as InMemoryStorage;
+
 final class PhabricatorPrometheusApplication extends PhabricatorApplication {
+
+  private $adapter;
+  private $registry;
+
+  function __construct() {
+    parent::__construct();
+    $self->$adapter  = new InMemoryStorage();
+    $self->$registry = new CollectorRegistry($adapter);
+  }
+
+  public function getRegistry(): CollectorRegistry {
+    return $self->$registry;
+  }
 
   public function getName(): string {
     return pht('Prometheus');
