@@ -11,7 +11,7 @@ final class PhabricatorPrometheusApplication extends PhabricatorApplication {
   function __construct() {
     parent::__construct();
     $self->$adapter  = new InMemoryStorage();
-    $self->$registry = new CollectorRegistry($adapter);
+    $self->$registry = new CollectorRegistry($self->$adapter);
   }
 
   public function getRegistry(): CollectorRegistry {
