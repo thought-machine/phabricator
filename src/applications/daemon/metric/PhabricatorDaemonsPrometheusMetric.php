@@ -11,17 +11,20 @@ final class PhabricatorDaemonsPrometheusMetric extends PhabricatorPrometheusMetr
   }
 
   public function getLabels(): array {
-    return ['host', 'class', 'status'];
+    return ['class', 'status'];
   }
 
   public function getValues(): array {
+    $device = AlmanacKeys::getLiveDevice();
     $table = new PhabricatorDaemonLog();
     $conn_r = $table->establishConnection('r');
 
     $data = queryfx_all(
       $conn_r,
-      'SELECT host, daemon AS class, status, COUNT(*) AS count FROM %T GROUP BY host, daemon, status',
-      $table->getTableName());
+      'SELECT daemon AS class, status, COUNT(*) AS count FROM %T WHERE host = %s GROUP BY host, daemon, status',
+      $table->getTableName(),
+      $device->getName()
+    );
 
     return array_map(
       function (array $row): array {
@@ -29,7 +32,6 @@ final class PhabricatorDaemonsPrometheusMetric extends PhabricatorPrometheusMetr
           $row['count'],
           [
             'class'  => $row['class'],
-            'host'   => $row['host'],
             'status' => $row['status'],
           ],
         ];

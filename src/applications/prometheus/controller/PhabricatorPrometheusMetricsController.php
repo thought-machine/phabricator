@@ -1,8 +1,6 @@
 <?php
 
-use Prometheus\CollectorRegistry;
 use Prometheus\RenderTextFormat;
-use Prometheus\Storage\InMemory as InMemoryStorage;
 
 /**
  * @phutil-external-symbol class CollectorRegistry
@@ -11,15 +9,12 @@ use Prometheus\Storage\InMemory as InMemoryStorage;
  */
 final class PhabricatorPrometheusMetricsController extends PhabricatorController {
 
-  private $registry;
-
   public function shouldRequireLogin(): bool {
     return false;
   }
 
   public function willProcessRequest(array $uri_data): void {
-    $adapter  = new InMemoryStorage();
-    $registry = new CollectorRegistry($adapter);
+    $registry = PhabricatorPrometheusApplication::getRegistry();
     $metrics  = PhabricatorPrometheusMetric::getAllMetrics();
 
     foreach ($metrics as $metric) {
