@@ -21,7 +21,7 @@ final class PhabricatorDaemonsPrometheusMetric extends PhabricatorPrometheusMetr
 
     $data = queryfx_all(
       $conn_r,
-      'SELECT daemon AS class, status, COUNT(*) AS count FROM %T WHERE host = %s GROUP BY host, daemon, status',
+      'SELECT daemon AS class, status, COUNT(*) AS count FROM %T WHERE host = %s GROUP BY daemon, status',
       $table->getTableName(),
       $device->getName()
     );
