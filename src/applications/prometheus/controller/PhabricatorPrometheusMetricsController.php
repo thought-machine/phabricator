@@ -9,6 +9,8 @@ use Prometheus\RenderTextFormat;
  */
 final class PhabricatorPrometheusMetricsController extends PhabricatorController {
 
+  private $registry;
+
   public function shouldRequireLogin(): bool {
     return false;
   }
