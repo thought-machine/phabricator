@@ -5,17 +5,10 @@ use Prometheus\Storage\InMemory as InMemoryStorage;
 
 final class PhabricatorPrometheusApplication extends PhabricatorApplication {
 
-  private $adapter;
-  private $registry;
+  private static $registry;
 
-  function __construct() {
-    parent::__construct();
-    $this->adapter  = new InMemoryStorage();
-    $this->registry = new CollectorRegistry($this->adapter);
-  }
-
-  public function getRegistry(): CollectorRegistry {
-    return $this->registry;
+  public static function getRegistry(): CollectorRegistry {
+    return self::$registry ?? (self::$registry = new CollectorRegistry(new InMemoryStorage()));
   }
 
   public function getName(): string {
