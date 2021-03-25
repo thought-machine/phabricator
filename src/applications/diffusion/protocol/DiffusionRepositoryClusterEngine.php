@@ -24,7 +24,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
   function __construct() {
     parent::__construct();
     $registry = PhabricatorPrometheusApplication::getRegistry();
-    $self->$syncMetric = $registry->getOrRegisterCounter(
+    $this->$syncMetric = $registry->getOrRegisterCounter(
       self::METRIC_NAMESPACE,
       'repo_sync_total',
       'The number of git sync operations',
