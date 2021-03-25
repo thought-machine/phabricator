@@ -22,7 +22,6 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
   private $syncMetric;
 
   function __construct() {
-    parent::__construct();
     $registry = PhabricatorPrometheusApplication::getRegistry();
     $this->syncMetric = $registry->getOrRegisterCounter(
       self::METRIC_NAMESPACE,
