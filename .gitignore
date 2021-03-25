@@ -2,3 +2,4 @@ src/.phutil_module_cache
 
 # Composer
 /vendor/
+composer.phar
