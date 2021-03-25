@@ -10,12 +10,12 @@ final class PhabricatorPrometheusApplication extends PhabricatorApplication {
 
   function __construct() {
     parent::__construct();
-    $this->$adapter  = new InMemoryStorage();
-    $this->$registry = new CollectorRegistry($self->$adapter);
+    $this->adapter  = new InMemoryStorage();
+    $this->registry = new CollectorRegistry($this->adapter);
   }
 
   public function getRegistry(): CollectorRegistry {
-    return $this->$registry;
+    return $this->registry;
   }
 
   public function getName(): string {
