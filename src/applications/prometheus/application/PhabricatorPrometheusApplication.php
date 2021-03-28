@@ -1,14 +1,14 @@
 <?php
 
 use Prometheus\CollectorRegistry;
-use Prometheus\Storage\InMemory as InMemoryStorage;
+use Prometheus\Storage\APC as APCStorage;
 
 final class PhabricatorPrometheusApplication extends PhabricatorApplication {
 
   private static $registry;
 
   public static function getRegistry(): CollectorRegistry {
-    return self::$registry ?? (self::$registry = new CollectorRegistry(new InMemoryStorage()));
+    return self::$registry ?? (self::$registry = new CollectorRegistry(new APCStorage()));
   }
 
   public function getName(): string {
