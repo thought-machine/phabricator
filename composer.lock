@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "137c151ce1eb7939bd4fbc5b7a3ee86b",
+    "content-hash": "adede2a8446ae657792114473ccfbddc",
     "packages": [
         {
             "name": "kelvinmo/simplejwt",
@@ -215,7 +215,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "ext-apc": "^5.1"
+        "ext-apcu": "^5.1"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
