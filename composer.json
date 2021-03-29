@@ -2,6 +2,6 @@
     "require": {
         "kelvinmo/simplejwt": "0.3.0",
         "promphp/prometheus_client_php": "^2.2",
-        "ext-apc": "^5.1"
+        "ext-apcu": "^5.1"
     }
 }
