@@ -1,14 +1,14 @@
 <?php
 
 use Prometheus\CollectorRegistry;
-use Prometheus\Storage\APC as APCStorage;
+use Prometheus\Storage\Redis as RedisStorage;
 
 final class PhabricatorPrometheusApplication extends PhabricatorApplication {
 
   private static $registry;
 
   public static function getRegistry(): CollectorRegistry {
-    return self::$registry ?? (self::$registry = new CollectorRegistry(new APCStorage()));
+    return self::$registry ?? (self::$registry = new CollectorRegistry(new RedisStorage()));
   }
 
   public function getName(): string {
