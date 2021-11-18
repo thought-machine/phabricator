@@ -9,6 +9,7 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'applications/diffusion/ssh/DiffusionGitUploadArchiveSSHWorkflow.php',
     'DiffusionRepositoryClusterEngine' => 'applications/diffusion/protocol/DiffusionRepositoryClusterEngine.php',
@@ -31,6 +32,7 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
+    'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
     'DifferentialRevisionViewController' => 'DifferentialController',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'DiffusionGitSSHWorkflow',
     'DiffusionRepositoryClusterEngine' => 'Phobject',

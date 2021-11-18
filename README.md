@@ -34,6 +34,7 @@ should find them.
    * Added a mode to allow it to run in the foreground without debug messages.
  * Applications
    * Added a handler for `git upload-archive` to Diffusion.
+   * Removed foist upon in DifferentialRevisionEditEngine.
  * Auth
    * Modified the Google auth provider to support Cloud IAP.
  * Celerity
