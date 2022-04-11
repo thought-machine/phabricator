@@ -60,6 +60,8 @@ should find them.
      * We allow this page to be `frameable` so we can embed it in other dashboards
    * *Change* to ProjectBoardTaskCard
      * We display the current status on the task.
+ * Repository
+   * Pointing clone URIs to the Phabricator URI even if a repo is hosted elsewhere.
 
 # Installation Instructions
 
