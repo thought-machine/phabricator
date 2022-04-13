@@ -499,7 +499,7 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
 
   public function passthruRemoteCommand($pattern /* , $arg, ... */) {
     $args = func_get_args();
-    return $this->newRemoteCommandPassthru($args)->resolve();
+    return $this->newRemoteCommandPassthru($args)->execute();
   }
 
   private function newRemoteCommandFuture(array $argv) {
@@ -540,7 +540,7 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
 
   public function passthruLocalCommand($pattern /* , $arg, ... */) {
     $args = func_get_args();
-    return $this->newLocalCommandPassthru($args)->resolve();
+    return $this->newLocalCommandPassthru($args)->execute();
   }
 
   private function newLocalCommandFuture(array $argv) {
@@ -1151,7 +1151,7 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
   /**
    * Get a parsed object representation of the repository's remote URI..
    *
-   * @return wild A @{class@arcanist:PhutilURI}.
+   * @return wild A @{class@libphutil:PhutilURI}.
    * @task uri
    */
   public function getRemoteURIObject() {
@@ -1193,7 +1193,7 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
         $base_uri->setPath($path);
         return $base_uri;
       }
-      // TM CHANGES BEGIN: Removed line that sets the clone URI to the remote repo when the repo is mirrored/observed.
+      // TM CHANGES BEGIN: Removed line that sets the close URI to the remote repo when the repo is mirrored/observed.
       // TM CHANGES END
     }
 
@@ -2109,7 +2109,7 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
       throw new Exception(
         pht(
           'The Almanac service for this repository is not bound to any '.
-          'active interfaces.'));
+          'interfaces.'));
     }
 
     $uris = array();
@@ -2269,9 +2269,10 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
       $never_proxy);
 
     if (!$client) {
-      $conduit_call = id(new ConduitCall($method, $params))
-        ->setUser($viewer);
-      $future = new MethodCallFuture($conduit_call, 'execute');
+      $result = id(new ConduitCall($method, $params))
+        ->setUser($viewer)
+        ->execute();
+      $future = new ImmediateFuture($result);
     } else {
       $future = $client->callMethod($method, $params);
     }
@@ -2530,7 +2531,7 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
     $service = id(new AlmanacServiceQuery())
       ->setViewer(PhabricatorUser::getOmnipotentUser())
       ->withPHIDs(array($service_phid))
-      ->needActiveBindings(true)
+      ->needBindings(true)
       ->needProperties(true)
       ->executeOne();
     if (!$service) {
@@ -2878,4 +2879,3 @@ final class PhabricatorRepository extends PhabricatorRepositoryDAO
   }
 
 }
-
