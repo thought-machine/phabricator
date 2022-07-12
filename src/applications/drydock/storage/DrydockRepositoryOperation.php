@@ -12,6 +12,11 @@ final class DrydockRepositoryOperation extends DrydockDAO
   const STATE_WORK = 'work';
   const STATE_DONE = 'done';
   const STATE_FAIL = 'fail';
+  // TM CHANGES
+  const LAND_OPERATION_METRIC_NAME = 'landing_operations_total';
+  const LAND_OPERATION_METRIC_HELP = 'The number of ongoing landing operations';
+  const LAND_OPERATION_METRIC_LABELS = array('repo');
+  // TM CHANGES END
 
   protected $authorPHID;
   protected $objectPHID;
@@ -34,9 +39,9 @@ final class DrydockRepositoryOperation extends DrydockDAO
       $registry = PhabricatorPrometheusApplication::getRegistry();
       $this->landingMetric = $registry->getOrRegisterGauge(
       self::METRIC_NAMESPACE,
-      'landing_operations_total',
-      'The number of ongoing landing operations',
-      ['repo']
+      self::LAND_OPERATION_METRIC_NAME,
+      self::LAND_OPERATION_METRIC_HELP,
+      self::LAND_OPERATION_METRIC_LABELS
       );
   }
   // TM CHANGES END

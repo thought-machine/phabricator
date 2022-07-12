@@ -10,9 +10,9 @@ final class DrydockRepositoryOperationUpdateWorker
       $registry = PhabricatorPrometheusApplication::getRegistry();
       $this->landingMetric = $registry->getOrRegisterGauge(
       self::METRIC_NAMESPACE,
-      'landing_operations_total',
-      'The number of ongoing landing operations',
-      ['repo']
+      DrydockRepositoryOperation::LAND_OPERATION_METRIC_NAME,
+      DrydockRepositoryOperation::LAND_OPERATION_METRIC_HELP,
+      DrydockRepositoryOperation::LAND_OPERATION_METRIC_LABELS
       );
   }
   // TM CHANGES END
