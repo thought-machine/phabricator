@@ -85,6 +85,9 @@ final class DrydockRepositoryOperationUpdateWorker
       $operation
         ->setOperationState(DrydockRepositoryOperation::STATE_FAIL)
         ->save();
+      // TM CHANGES
+      $this->landingMetric->dec(['repo' => $repository->getDisplayName()]);
+      // TM CHANGES END
       throw $ex;
     }
 
