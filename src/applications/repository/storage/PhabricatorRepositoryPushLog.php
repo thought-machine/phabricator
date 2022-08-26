@@ -11,7 +11,9 @@
  */
 final class PhabricatorRepositoryPushLog
   extends PhabricatorRepositoryDAO
-  implements PhabricatorPolicyInterface {
+  implements 
+    PhabricatorBuildableInterface,
+    PhabricatorPolicyInterface {
 
   const REFTYPE_BRANCH = 'branch';
   const REFTYPE_TAG = 'tag';

@@ -48,6 +48,7 @@ should find them.
  * Diffusion
    * Added Git upload archive workflow
    * Added prometheus metrics to track cluster sync successes and failures
+   * Added herald rules and harbourmaster builds for refs
  * Prometheus
    * Added prometheus metric infrastructure and application.
    * Added phabricator up metric to indicate whether phabricator is up or not.
@@ -62,6 +63,8 @@ should find them.
      * We display the current status on the task.
  * Repository
    * Pointing clone URIs to the Phabricator URI even if a repo is hosted elsewhere.
+   * added buildable interface for push log for harbormaster builds for refs
+
 
 # Installation Instructions
 
