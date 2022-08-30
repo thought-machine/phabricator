@@ -15,8 +15,6 @@ phutil_register_library_map(array(
     'DiffusionPushLogBuildableEngine' => 'applications/diffusion/harbormaster/DiffusionPushLogBuildableEngine.php',
     'DiffusionPushLogBuildableTransaction' => 'applications/diffusion/xaction/DiffusionPushLogBuildableTransaction.php',
     'DiffusionRepositoryClusterEngine' => 'applications/diffusion/protocol/DiffusionRepositoryClusterEngine.php',
-    'DrydockRepositoryOperation' => 'applications/drydock/storage/DrydockRepositoryOperation.php',
-    'DrydockRepositoryOperationUpdateWorker' => 'applications/drydock/worker/DrydockRepositoryOperationUpdateWorker.php',
     'HeraldPreCommitRefAdapter' => 'applications/diffusion/herald/HeraldPreCommitRefAdapter.php',
     'PhabricatorAphlictManagementForegroundWorkflow' => 'applications/aphlict/management/PhabricatorAphlictManagementForegroundWorkflow.php',
     'PhabricatorAuthProvider' => 'applications/auth/provider/PhabricatorAuthProvider.php',
@@ -45,11 +43,6 @@ phutil_register_library_map(array(
     'DiffusionPushLogBuildableEngine' => 'HarbormasterBuildableEngine',
     'DiffusionPushLogBuildableTransaction' => 'PhabricatorModularTransactionType',
     'DiffusionRepositoryClusterEngine' => 'Phobject',
-    'DrydockRepositoryOperation' => array(
-      'DrydockDAO',
-      'PhabricatorPolicyInterface',
-    ),
-    'DrydockRepositoryOperationUpdateWorker' => 'DrydockWorker',
     'HeraldPreCommitRefAdapter' => array(
       'HeraldPreCommitAdapter',
       'HarbormasterBuildableAdapterInterface',
