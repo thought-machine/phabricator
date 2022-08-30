@@ -11,9 +11,9 @@ phutil_register_library_map(array(
   'class' => array(
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
-    'DiffusionCommitBuildableTransaction' => 'applications/diffusion/xaction/DiffusionPushLogBuildableTransaction.php',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'applications/diffusion/ssh/DiffusionGitUploadArchiveSSHWorkflow.php',
     'DiffusionPushLogBuildableEngine' => 'applications/diffusion/harbormaster/DiffusionPushLogBuildableEngine.php',
+    'DiffusionPushLogBuildableTransaction' => 'applications/diffusion/xaction/DiffusionPushLogBuildableTransaction.php',
     'DiffusionRepositoryClusterEngine' => 'applications/diffusion/protocol/DiffusionRepositoryClusterEngine.php',
     'DrydockRepositoryOperation' => 'applications/drydock/storage/DrydockRepositoryOperation.php',
     'DrydockRepositoryOperationUpdateWorker' => 'applications/drydock/worker/DrydockRepositoryOperationUpdateWorker.php',
@@ -41,9 +41,9 @@ phutil_register_library_map(array(
   'xmap' => array(
     'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
     'DifferentialRevisionViewController' => 'DifferentialController',
-    'DiffusionCommitBuildableTransaction' => 'PhabricatorModularTransactionType',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'DiffusionGitSSHWorkflow',
     'DiffusionPushLogBuildableEngine' => 'HarbormasterBuildableEngine',
+    'DiffusionPushLogBuildableTransaction' => 'PhabricatorModularTransactionType',
     'DiffusionRepositoryClusterEngine' => 'Phobject',
     'DrydockRepositoryOperation' => array(
       'DrydockDAO',

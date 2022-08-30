@@ -14,11 +14,14 @@ final class HeraldPreCommitRefAdapter
     return 2000;
   }
 
+  /* TM CHANGES */
   public function getAdapterContentDescription() {
     return pht(
       "React to branches and tags being pushed to hosted repositories.\n".
-      "Hook rules can block changes and send push summary mail.");
+      "Hook rules can block changes, send push summary mail, ".
+      "and run build plans.");
   }
+  /* TM CHANGES END */
 
   public function isPreCommitRefAdapter() {
     return true;

@@ -1,7 +1,7 @@
 <?php
 
 /* TM CHANGES */
-final class DiffusionCommitBuildableTransaction
+final class DiffusionPushLogBuildableTransaction
   extends PhabricatorModularTransactionType {
 
   // NOTE: This uses an older constant for compatibility. We should perhaps
