@@ -81,7 +81,7 @@ phutil_register_library_map(array(
     ),
     'PhabricatorRepositoryPushLog' => array(
       'PhabricatorRepositoryDAO',
-      'PhabricatorBuildableInterface',
+      'HarbormasterBuildableInterface',
       'PhabricatorPolicyInterface',
     ),
     'PhabricatorUpPrometheusMetric' => 'PhabricatorPrometheusMetricGauge',
