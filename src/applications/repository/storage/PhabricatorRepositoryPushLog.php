@@ -11,9 +11,11 @@
  */
 final class PhabricatorRepositoryPushLog
   extends PhabricatorRepositoryDAO
+  // TM CHANGES
   implements
     HarbormasterBuildableInterface,
     PhabricatorPolicyInterface {
+  // TM CHANGES END
 
   const REFTYPE_BRANCH = 'branch';
   const REFTYPE_TAG = 'tag';
