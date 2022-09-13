@@ -175,7 +175,8 @@ final class DifferentialRevisionEditEngine
       ->setConduitDescription(pht('Retitle the revision.'))
       ->setConduitTypeDescription(pht('New revision title.'))
       ->setValue($object->getTitle());
-
+    // TM CHANGES (remove foist upon)
+    // TM CHANGES END
     $fields[] = id(new PhabricatorRemarkupEditField())
       ->setKey(DifferentialRevisionSummaryTransaction::EDITKEY)
       ->setLabel(pht('Summary'))

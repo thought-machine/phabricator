@@ -12,6 +12,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
 
   private $repository;
   private $viewer;
+  private $actingAsPHID;
   private $logger;
 
   private $clusterWriteLock;
@@ -59,6 +60,22 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
     return $this;
   }
 
+  public function setActingAsPHID($acting_as_phid) {
+    $this->actingAsPHID = $acting_as_phid;
+    return $this;
+  }
+
+  public function getActingAsPHID() {
+    return $this->actingAsPHID;
+  }
+
+  private function getEffectiveActingAsPHID() {
+    if ($this->actingAsPHID) {
+      return $this->actingAsPHID;
+    }
+
+    return $this->getViewer()->getPHID();
+  }
 
 
 /* -(  Cluster Synchronization  )-------------------------------------------- */
@@ -303,9 +320,10 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         throw new Exception(
           pht(
             'Repository "%s" exists on more than one device, but no device '.
-            'has any repository version information. Phabricator can not '.
-            'guess which copy of the existing data is authoritative. Promote '.
-            'a device or see "Ambiguous Leaders" in the documentation.',
+            'has any repository version information. There is no way for the '.
+            'software to determine which copy of the existing data is '.
+            'authoritative. Promote a device or see "Ambiguous Leaders" in '.
+            'the documentation.',
             $repository->getDisplayName()));
       }
 
@@ -464,7 +482,6 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           'category' => 'write_interupted_failure'
         ]
       );
-      // TM CHANGES END
       throw new Exception(
         pht(
           'A previous write to this repository was interrupted; refusing '.
@@ -472,6 +489,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
           'see "Write Interruptions" in the "Cluster: Repositories" in the '.
           'documentation for instructions.'));
     }
+      // TM CHANGES END
 
     $read_wait_start = microtime(true);
     try {
@@ -491,7 +509,7 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
       $repository_phid,
       $device_phid,
       array(
-        'userPHID' => $viewer->getPHID(),
+        'userPHID' => $this->getEffectiveActingAsPHID(),
         'epoch' => PhabricatorTime::getNow(),
         'devicePHID' => $device_phid,
       ),
@@ -1013,6 +1031,43 @@ final class DiffusionRepositoryClusterEngine extends Phobject {
         $handles[$user_phid]->getName(),
         $handles[$device_phid]->getName(),
         new PhutilNumber($duration)));
+  }
+
+  public function newMaintenanceEvent() {
+    $viewer = $this->getViewer();
+    $repository = $this->getRepository();
+    $now = PhabricatorTime::getNow();
+
+    $event = PhabricatorRepositoryPushEvent::initializeNewEvent($viewer)
+      ->setRepositoryPHID($repository->getPHID())
+      ->setEpoch($now)
+      ->setPusherPHID($this->getEffectiveActingAsPHID())
+      ->setRejectCode(PhabricatorRepositoryPushLog::REJECT_ACCEPT);
+
+    return $event;
+  }
+
+  public function newMaintenanceLog() {
+    $viewer = $this->getViewer();
+    $repository = $this->getRepository();
+    $now = PhabricatorTime::getNow();
+
+    $device = AlmanacKeys::getLiveDevice();
+    if ($device) {
+      $device_phid = $device->getPHID();
+    } else {
+      $device_phid = null;
+    }
+
+    return PhabricatorRepositoryPushLog::initializeNewLog($viewer)
+      ->setDevicePHID($device_phid)
+      ->setRepositoryPHID($repository->getPHID())
+      ->attachRepository($repository)
+      ->setEpoch($now)
+      ->setPusherPHID($this->getEffectiveActingAsPHID())
+      ->setChangeFlags(PhabricatorRepositoryPushLog::CHANGEFLAG_MAINTENANCE)
+      ->setRefType(PhabricatorRepositoryPushLog::REFTYPE_MAINTENANCE)
+      ->setRefNew('');
   }
 
 }
