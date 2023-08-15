@@ -49,6 +49,8 @@ should find them.
    * Added Git upload archive workflow
    * Added prometheus metrics to track cluster sync successes and failures
    * Added herald rules and harbourmaster builds for refs
+ * Drydock
+   * Modified the working copy blueprint to rebase before trying to merge.
  * Prometheus
    * Added prometheus metric infrastructure and application.
    * Added phabricator up metric to indicate whether phabricator is up or not.
