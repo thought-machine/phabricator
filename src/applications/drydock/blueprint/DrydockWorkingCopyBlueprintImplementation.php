@@ -8,6 +8,7 @@ final class DrydockWorkingCopyBlueprintImplementation
   const PHASE_MERGEFETCH = 'blueprint.workingcopy.fetch.staging';
   // TM CHANGES BEGIN
   const PHASE_MERGEREBASE = 'blueprint.workingcopy.rebase';
+  const TMP_BRANCH_PREFIX = 'tmp-drydock';
   // TM CHANGES END
 
   public function isEnabled() {
@@ -523,7 +524,10 @@ final class DrydockWorkingCopyBlueprintImplementation
     // TM CHANGES BEGIN
     // We try to rebase the diff off the branch we are trying land on.
     // this means we can drop any commits which have already been landed.
-    $tmp_branch_name = sprintf('tmp-branch-%d', rand());
+    $tmp_branch_name = sprintf(
+      '%s-%d',
+      self::GIT_BRANCH_PREFIX,
+      rand());
     try {
       $interface->execx(
         'git checkout -b %s %s',
@@ -556,8 +560,8 @@ final class DrydockWorkingCopyBlueprintImplementation
         return;
       } catch (CommandException $ex) {
         $interface->execx(
-          'git branch -D %s',
-          $tmp_branch_name);
+          'git branch -D `git branch | grep -E "%s-.*"`',
+          self::GIT_BRANCH_PREFIX);
         $display_command = csprintf(
           'git merge --squash %R',
           $src_ref);
@@ -596,8 +600,8 @@ final class DrydockWorkingCopyBlueprintImplementation
       $interface->execx('%C', $real_command);
     } catch (CommandException $ex) {
       $interface->execx(
-        'git branch -D %s',
-        $tmp_branch_name);
+        'git branch -D `git branch | grep -E "%s-.*"`',
+        self::GIT_BRANCH_PREFIX);
       
       // display the full rebase command so the user can debug the full flow
       $display_command = csprintf(
@@ -615,8 +619,8 @@ final class DrydockWorkingCopyBlueprintImplementation
     }
 
     $interface->execx(
-      'git branch -D %s',
-      $tmp_branch_name);
+      'git branch -D `git branch | grep -E "%s-.*"`',
+      self::GIT_BRANCH_PREFIX);
 
     // TM CHANGES END
   }
