@@ -7,7 +7,6 @@ final class DrydockWorkingCopyBlueprintImplementation
   const PHASE_REMOTEFETCH = 'blueprint.workingcopy.fetch.remote';
   const PHASE_MERGEFETCH = 'blueprint.workingcopy.fetch.staging';
   // TM CHANGES BEGIN
-  const PHASE_MERGEREBASE = 'blueprint.workingcopy.rebase';
   const TMP_BRANCH_PREFIX = 'tmp-drydock';
   // TM CHANGES END
 
@@ -539,7 +538,7 @@ final class DrydockWorkingCopyBlueprintImplementation
         $tmp_branch_name,
         $src_ref);
       $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_MERGEFETCH)
+        ->setPhase(self::PHASE_SQUASHMERGE)
         ->setDisplayCommand($display_command);
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
 
@@ -557,7 +556,6 @@ final class DrydockWorkingCopyBlueprintImplementation
           'drydock',
           'drydock@phabricator',
           $src_ref);
-        return;
       } catch (CommandException $ex) {
         $interface->execx(
           'git branch -D `git branch | grep -E "%s-.*"`',
@@ -573,6 +571,10 @@ final class DrydockWorkingCopyBlueprintImplementation
         $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
         throw $ex;
       }
+      $interface->execx(
+        'git branch -D `git branch | grep -E "%s-.*"`',
+        self::GIT_BRANCH_PREFIX);
+      return;
     }
 
     try {
@@ -580,7 +582,7 @@ final class DrydockWorkingCopyBlueprintImplementation
     } catch (CommandException $ex) {
       
       $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_MERGEREBASE)
+        ->setPhase(self::PHASE_SQUASHMERGE)
         ->setDisplayCommand('git checkout -');
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
 
