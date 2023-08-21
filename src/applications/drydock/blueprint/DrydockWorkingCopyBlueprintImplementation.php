@@ -552,7 +552,7 @@ final class DrydockWorkingCopyBlueprintImplementation
       // If we fail to rebase we insted do the original squash merge without rebase
       try {
         $interface->execx(
-          'git checkout - && git -c user.name=%s -c user.email=%s merge --no-stat --squash -- %s',
+          'git rebase --abort && git checkout - && git -c user.name=%s -c user.email=%s merge --no-stat --squash -- %s',
           'drydock',
           'drydock@phabricator',
           $src_ref);
