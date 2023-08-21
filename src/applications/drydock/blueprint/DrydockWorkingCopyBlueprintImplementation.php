@@ -7,7 +7,7 @@ final class DrydockWorkingCopyBlueprintImplementation
   const PHASE_REMOTEFETCH = 'blueprint.workingcopy.fetch.remote';
   const PHASE_MERGEFETCH = 'blueprint.workingcopy.fetch.staging';
   // TM CHANGES BEGIN
-  const PHASE_MERGEREBASE = 'blueprint.workingcopy.rebase';
+  const TMP_BRANCH_PREFIX = 'tmp-drydock';
   // TM CHANGES END
 
   public function isEnabled() {
@@ -523,7 +523,10 @@ final class DrydockWorkingCopyBlueprintImplementation
     // TM CHANGES BEGIN
     // We try to rebase the diff off the branch we are trying land on.
     // this means we can drop any commits which have already been landed.
-    $tmp_branch_name = sprintf('tmp-branch-%d', rand());
+    $tmp_branch_name = sprintf(
+      '%s-%d',
+      self::TMP_BRANCH_PREFIX,
+      rand());
     try {
       $interface->execx(
         'git checkout -b %s %s',
@@ -535,7 +538,7 @@ final class DrydockWorkingCopyBlueprintImplementation
         $tmp_branch_name,
         $src_ref);
       $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_MERGEFETCH)
+        ->setPhase(self::PHASE_SQUASHMERGE)
         ->setDisplayCommand($display_command);
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
 
@@ -553,11 +556,7 @@ final class DrydockWorkingCopyBlueprintImplementation
           'drydock',
           'drydock@phabricator',
           $src_ref);
-        return;
       } catch (CommandException $ex) {
-        $interface->execx(
-          'git branch -D %s',
-          $tmp_branch_name);
         $display_command = csprintf(
           'git merge --squash %R',
           $src_ref);
@@ -567,8 +566,19 @@ final class DrydockWorkingCopyBlueprintImplementation
           ->setDisplayCommand($display_command);
 
         $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+        $interface->execx(
+          'git branch -D `git branch | grep -E "%s-.*"`',
+          self::TMP_BRANCH_PREFIX);
         throw $ex;
       }
+      try {
+        $interface->execx(
+          'git branch -D `git branch | grep -E "%s-.*"`',
+          self::TMP_BRANCH_PREFIX);
+      } catch (CommandExeption $ex) {
+        // ignore it we were just trying to tidy up after ourselves
+      }
+      return;
     }
 
     try {
@@ -576,7 +586,7 @@ final class DrydockWorkingCopyBlueprintImplementation
     } catch (CommandException $ex) {
       
       $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_MERGEREBASE)
+        ->setPhase(self::PHASE_SQUASHMERGE)
         ->setDisplayCommand('git checkout -');
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
 
@@ -595,10 +605,6 @@ final class DrydockWorkingCopyBlueprintImplementation
     try {
       $interface->execx('%C', $real_command);
     } catch (CommandException $ex) {
-      $interface->execx(
-        'git branch -D %s',
-        $tmp_branch_name);
-      
       // display the full rebase command so the user can debug the full flow
       $display_command = csprintf(
         'git checkout -b %s %R && git rebase - && checkout - && git merge --squash %s',
@@ -611,13 +617,20 @@ final class DrydockWorkingCopyBlueprintImplementation
         ->setDisplayCommand($display_command);
 
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+      $interface->execx(
+        'git branch -D `git branch | grep -E "%s-.*"`',
+        self::TMP_BRANCH_PREFIX);
+
       throw $ex;
     }
 
-    $interface->execx(
-      'git branch -D %s',
-      $tmp_branch_name);
-
+    try {
+      $interface->execx(
+        'git branch -D `git branch | grep -E "%s-.*"`',
+        self::TMP_BRANCH_PREFIX);
+    } catch (CommandExeption $ex) {
+      // ignore it we were just trying to tidy up after ourselves
+    }
     // TM CHANGES END
   }
 
