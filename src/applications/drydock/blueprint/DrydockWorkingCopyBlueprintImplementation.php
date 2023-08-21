@@ -525,7 +525,7 @@ final class DrydockWorkingCopyBlueprintImplementation
     // this means we can drop any commits which have already been landed.
     $tmp_branch_name = sprintf(
       '%s-%d',
-      self::GIT_BRANCH_PREFIX,
+      self::TMP_BRANCH_PREFIX,
       rand());
     try {
       $interface->execx(
@@ -568,13 +568,13 @@ final class DrydockWorkingCopyBlueprintImplementation
         $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
         $interface->execx(
           'git branch -D `git branch | grep -E "%s-.*"`',
-          self::GIT_BRANCH_PREFIX);
+          self::TMP_BRANCH_PREFIX);
         throw $ex;
       }
       try {
         $interface->execx(
           'git branch -D `git branch | grep -E "%s-.*"`',
-          self::GIT_BRANCH_PREFIX);
+          self::TMP_BRANCH_PREFIX);
       } catch (CommandExeption $ex) {
         // ignore it we were just trying to tidy up after ourselves
       }
@@ -619,7 +619,7 @@ final class DrydockWorkingCopyBlueprintImplementation
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
       $interface->execx(
         'git branch -D `git branch | grep -E "%s-.*"`',
-        self::GIT_BRANCH_PREFIX);
+        self::TMP_BRANCH_PREFIX);
 
       throw $ex;
     }
@@ -627,7 +627,7 @@ final class DrydockWorkingCopyBlueprintImplementation
     try {
       $interface->execx(
         'git branch -D `git branch | grep -E "%s-.*"`',
-        self::GIT_BRANCH_PREFIX);
+        self::TMP_BRANCH_PREFIX);
     } catch (CommandExeption $ex) {
       // ignore it we were just trying to tidy up after ourselves
     }
