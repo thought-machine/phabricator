@@ -557,9 +557,6 @@ final class DrydockWorkingCopyBlueprintImplementation
           'drydock@phabricator',
           $src_ref);
       } catch (CommandException $ex) {
-        $interface->execx(
-          'git branch -D `git branch | grep -E "%s-.*"`',
-          self::GIT_BRANCH_PREFIX);
         $display_command = csprintf(
           'git merge --squash %R',
           $src_ref);
@@ -569,11 +566,18 @@ final class DrydockWorkingCopyBlueprintImplementation
           ->setDisplayCommand($display_command);
 
         $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+        $interface->execx(
+          'git branch -D `git branch | grep -E "%s-.*"`',
+          self::GIT_BRANCH_PREFIX);
         throw $ex;
       }
-      $interface->execx(
-        'git branch -D `git branch | grep -E "%s-.*"`',
-        self::GIT_BRANCH_PREFIX);
+      try {
+        $interface->execx(
+          'git branch -D `git branch | grep -E "%s-.*"`',
+          self::GIT_BRANCH_PREFIX);
+      } catch (CommandExeption $ex) {
+        // ignore it we were just trying to tidy up after ourselves
+      }
       return;
     }
 
@@ -601,10 +605,6 @@ final class DrydockWorkingCopyBlueprintImplementation
     try {
       $interface->execx('%C', $real_command);
     } catch (CommandException $ex) {
-      $interface->execx(
-        'git branch -D `git branch | grep -E "%s-.*"`',
-        self::GIT_BRANCH_PREFIX);
-      
       // display the full rebase command so the user can debug the full flow
       $display_command = csprintf(
         'git checkout -b %s %R && git rebase - && checkout - && git merge --squash %s',
@@ -617,13 +617,20 @@ final class DrydockWorkingCopyBlueprintImplementation
         ->setDisplayCommand($display_command);
 
       $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+      $interface->execx(
+        'git branch -D `git branch | grep -E "%s-.*"`',
+        self::GIT_BRANCH_PREFIX);
+
       throw $ex;
     }
 
-    $interface->execx(
-      'git branch -D `git branch | grep -E "%s-.*"`',
-      self::GIT_BRANCH_PREFIX);
-
+    try {
+      $interface->execx(
+        'git branch -D `git branch | grep -E "%s-.*"`',
+        self::GIT_BRANCH_PREFIX);
+    } catch (CommandExeption $ex) {
+      // ignore it we were just trying to tidy up after ourselves
+    }
     // TM CHANGES END
   }
 
