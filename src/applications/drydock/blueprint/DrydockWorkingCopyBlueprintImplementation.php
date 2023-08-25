@@ -7,6 +7,7 @@ final class DrydockWorkingCopyBlueprintImplementation
   const PHASE_REMOTEFETCH = 'blueprint.workingcopy.fetch.remote';
   const PHASE_MERGEFETCH = 'blueprint.workingcopy.fetch.staging';
   // TM CHANGES BEGIN
+  const PHASE_REBASE = 'rebase';
   const TMP_BRANCH_PREFIX = 'tmp-drydock';
   // TM CHANGES END
 
@@ -521,45 +522,87 @@ final class DrydockWorkingCopyBlueprintImplementation
     }
 
     // TM CHANGES BEGIN
-    // We try to rebase the diff off the branch we are trying land on.
-    // this means we can drop any commits which have already been landed.
-    $tmp_branch_name = sprintf(
-      '%s-%d',
-      self::TMP_BRANCH_PREFIX,
-      rand());
+    // We first try to squash merge then if that fails we try to rebase the diff off the branch
+    // we are trying land on. Rebasing means we can drop any commits which have already been landed.
     try {
+      // NOTE: This can never actually generate a commit because we pass
+      // "--squash", but git sometimes runs code to check that a username and
+      // email are configured anyway.
       $interface->execx(
-        'git checkout -b %s %s',
-        $tmp_branch_name,
+        'git -c user.name=%s -c user.email=%s merge --no-stat --squash -- %s',
+        'drydock',
+        'drydock@phabricator',
         $src_ref);
     } catch (CommandException $ex) {
-      $display_command = csprintf(
-        'git checkout -b %s %R',
-        $tmp_branch_name,
-        $src_ref);
-      $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_SQUASHMERGE)
-        ->setDisplayCommand($display_command);
-      $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
-
-      throw $ex;
-    }
-
-    try {
-      $interface->execx('git rebase -');
-    } catch (CommandException $ex) {
-
-      // If we fail to rebase we insted do the original squash merge without rebase
+      $tmp_branch_name = sprintf(
+        '%s-%d',
+        self::TMP_BRANCH_PREFIX,
+        rand());
       try {
         $interface->execx(
-          'git rebase --abort && git checkout - && git -c user.name=%s -c user.email=%s merge --no-stat --squash -- %s',
-          'drydock',
-          'drydock@phabricator',
+          'git reset HEAD --hard && git checkout -b %s %s',
+          $tmp_branch_name,
           $src_ref);
       } catch (CommandException $ex) {
         $display_command = csprintf(
-          'git merge --squash %R',
+          'git reset HEAD --hard && git checkout -b %s %R',
+          $tmp_branch_name,
           $src_ref);
+        $error = DrydockCommandError::newFromCommandException($ex)
+          ->setPhase(self::PHASE_REBASE)
+          ->setDisplayCommand($display_command);
+        $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+
+        throw $ex;
+      }
+
+      try {
+        $interface->execx('git rebase -');
+      } catch (CommandException $ex) {
+        $error = DrydockCommandError::newFromCommandException($ex)
+          ->setPhase(self::PHASE_REBASE)
+          ->setDisplayCommand('git rebase -');
+        $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+
+        $interface->execx('git rebase --abort && git checkout -');
+        $interface->execx(
+          'git branch -D `git branch | grep -E "%s-.*"`',
+          self::TMP_BRANCH_PREFIX);
+
+        throw $ex;
+      }
+
+      try {
+        $interface->execx('git checkout -');
+      } catch (CommandException $ex) {
+
+        $error = DrydockCommandError::newFromCommandException($ex)
+          ->setPhase(self::PHASE_SQUASHMERGE)
+          ->setDisplayCommand('git checkout -');
+        $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
+
+        throw $ex;
+      }
+
+      // NOTE: This can never actually generate a commit because we pass
+      // "--squash", but git sometimes runs code to check that a username and
+      // email are configured anyway.
+      $real_command = csprintf(
+        'git -c user.name=%s -c user.email=%s merge --no-stat --squash -- %s',
+        'drydock',
+        'drydock@phabricator',
+        $tmp_branch_name);
+
+      try {
+        $interface->execx('%C', $real_command);
+      } catch (CommandException $ex) {
+        // display the full rebase command so the user can debug the full flow
+        $display_command = csprintf(
+          'git merge --squash %s || git checkout -b %s %R && git rebase - && checkout - && git merge --squash %s',
+          $src_ref,
+          $tmp_branch_name,
+          $src_ref,
+          $tmp_branch_name);
 
         $error = DrydockCommandError::newFromCommandException($ex)
           ->setPhase(self::PHASE_SQUASHMERGE)
@@ -569,8 +612,10 @@ final class DrydockWorkingCopyBlueprintImplementation
         $interface->execx(
           'git branch -D `git branch | grep -E "%s-.*"`',
           self::TMP_BRANCH_PREFIX);
+
         throw $ex;
       }
+
       try {
         $interface->execx(
           'git branch -D `git branch | grep -E "%s-.*"`',
@@ -578,59 +623,8 @@ final class DrydockWorkingCopyBlueprintImplementation
       } catch (CommandExeption $ex) {
         // ignore it we were just trying to tidy up after ourselves
       }
-      return;
     }
 
-    try {
-      $interface->execx('git checkout -');
-    } catch (CommandException $ex) {
-      
-      $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_SQUASHMERGE)
-        ->setDisplayCommand('git checkout -');
-      $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
-
-      throw $ex;
-    }
-
-    // NOTE: This can never actually generate a commit because we pass
-    // "--squash", but git sometimes runs code to check that a username and
-    // email are configured anyway.
-    $real_command = csprintf(
-      'git -c user.name=%s -c user.email=%s merge --no-stat --squash -- %s',
-      'drydock',
-      'drydock@phabricator',
-      $tmp_branch_name);
-
-    try {
-      $interface->execx('%C', $real_command);
-    } catch (CommandException $ex) {
-      // display the full rebase command so the user can debug the full flow
-      $display_command = csprintf(
-        'git checkout -b %s %R && git rebase - && checkout - && git merge --squash %s',
-        $tmp_branch_name,
-        $src_ref,
-        $tmp_branch_name);
-
-      $error = DrydockCommandError::newFromCommandException($ex)
-        ->setPhase(self::PHASE_SQUASHMERGE)
-        ->setDisplayCommand($display_command);
-
-      $lease->setAttribute('workingcopy.vcs.error', $error->toDictionary());
-      $interface->execx(
-        'git branch -D `git branch | grep -E "%s-.*"`',
-        self::TMP_BRANCH_PREFIX);
-
-      throw $ex;
-    }
-
-    try {
-      $interface->execx(
-        'git branch -D `git branch | grep -E "%s-.*"`',
-        self::TMP_BRANCH_PREFIX);
-    } catch (CommandExeption $ex) {
-      // ignore it we were just trying to tidy up after ourselves
-    }
     // TM CHANGES END
   }
 
