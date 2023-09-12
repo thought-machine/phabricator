@@ -540,6 +540,9 @@ final class DrydockWorkingCopyBlueprintImplementation
         rand());
       try {
         $interface->execx(
+          // First we reset HEAD --hard because we may have succeded to git merge --squash
+          // some changes onto HEAD above but failed eg due to merge conflicts so make sure
+          // the HEAD is clean before attempting the rebase
           'git reset HEAD --hard && git checkout -b %s %s',
           $tmp_branch_name,
           $src_ref);
