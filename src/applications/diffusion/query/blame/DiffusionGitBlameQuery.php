@@ -13,7 +13,7 @@ final class DiffusionGitBlameQuery extends DiffusionBlameQuery {
 
     // TM CHANGES
     return $repository->getLocalCommandFuture(
-      '--no-pager blame --root -s -l -C %s -- %s',
+      '--no-pager blame --root -s -l -C -w %s -- %s',
       gitsprintf('%s', $commit),
       $path);
     // TM CHANGES END
