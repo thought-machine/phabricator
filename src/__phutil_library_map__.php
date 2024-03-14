@@ -9,6 +9,7 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'DifferentialDiffOntoField' => 'applications/differential/herald/DifferentialDiffOnto.php',
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
     'DiffusionGitBlameQuery' => 'applications/diffusion/query/blame/DiffusionGitBlameQuery.php',
@@ -39,6 +40,7 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
+    'DifferentialDiffOntoField' => 'DifferentialDiffHeraldField',
     'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
     'DifferentialRevisionViewController' => 'DifferentialController',
     'DiffusionGitBlameQuery' => 'DiffusionBlameQuery',
