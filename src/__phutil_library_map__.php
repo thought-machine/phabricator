@@ -9,7 +9,7 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
-    'DifferentialDiffOntoField' => 'applications/differential/herald/DifferentialDiffOnto.php',
+    'DifferentialDiffOntoField' => 'applications/differential/herald/DifferentialDiffOntoField.php',
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
     'DiffusionGitBlameQuery' => 'applications/diffusion/query/blame/DiffusionGitBlameQuery.php',

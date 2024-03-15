@@ -10,11 +10,7 @@ final class DifferentialDiffOntoField
   }
 
   public function getHeraldFieldValue($object) {
-    $onto = $object->loadTargetBranch();
-    if (phutil_nonempty_string($onto)) {
-      return $onto;
-    }
-    return '';
+    return $object->loadTargetBranch();
   }
 
   protected function getHeraldFieldStandardType() {
