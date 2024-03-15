@@ -9,8 +9,8 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
-    'DifferentialDiffOntoField' => 'applications/differential/herald/DifferentialDiffOntoField.php',
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
+    'DifferentialRevisionTitleHeraldField' => 'applications/differential/herald/DifferentialRevisionOntoField.php',
     'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
     'DiffusionGitBlameQuery' => 'applications/diffusion/query/blame/DiffusionGitBlameQuery.php',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'applications/diffusion/ssh/DiffusionGitUploadArchiveSSHWorkflow.php',
@@ -18,6 +18,7 @@ phutil_register_library_map(array(
     'DiffusionPushLogBuildableTransaction' => 'applications/diffusion/xaction/DiffusionPushLogBuildableTransaction.php',
     'DiffusionRepositoryClusterEngine' => 'applications/diffusion/protocol/DiffusionRepositoryClusterEngine.php',
     'DrydockWorkingCopyBlueprintImplementation' => 'applications/drydock/blueprint/DrydockWorkingCopyBlueprintImplementation.php',
+    'HeraldDifferentialRevisionAdapter' => 'applications/differential/herald/HeraldDifferentialRevisionAdapter.php',
     'HeraldPreCommitRefAdapter' => 'applications/diffusion/herald/HeraldPreCommitRefAdapter.php',
     'PhabricatorAphlictManagementForegroundWorkflow' => 'applications/aphlict/management/PhabricatorAphlictManagementForegroundWorkflow.php',
     'PhabricatorAuthProvider' => 'applications/auth/provider/PhabricatorAuthProvider.php',
@@ -40,8 +41,8 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
-    'DifferentialDiffOntoField' => 'DifferentialDiffHeraldField',
     'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
+    'DifferentialRevisionTitleHeraldField' => 'DifferentialRevisionHeraldField',
     'DifferentialRevisionViewController' => 'DifferentialController',
     'DiffusionGitBlameQuery' => 'DiffusionBlameQuery',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'DiffusionGitSSHWorkflow',
@@ -49,6 +50,10 @@ phutil_register_library_map(array(
     'DiffusionPushLogBuildableTransaction' => 'PhabricatorModularTransactionType',
     'DiffusionRepositoryClusterEngine' => 'Phobject',
     'DrydockWorkingCopyBlueprintImplementation' => 'DrydockBlueprintImplementation',
+    'HeraldDifferentialRevisionAdapter' => array(
+      'HeraldDifferentialAdapter',
+      'HarbormasterBuildableAdapterInterface',
+    ),
     'HeraldPreCommitRefAdapter' => array(
       'HeraldPreCommitAdapter',
       'HarbormasterBuildableAdapterInterface',
