@@ -1,19 +1,20 @@
-i<?php
+<?php
 
-final class DifferentialDiffOntoField
-  extends DifferentialDiffHeraldField {
+final class DifferentialRevisionTitleHeraldField
+  extends DifferentialRevisionHeraldField {
 
-  const FIELDCONST = 'differential.diff.refs.onto';
+  const FIELDCONST = 'differential.revision.onto';
 
   public function getHeraldFieldName() {
     return pht('Onto branch');
   }
 
   public function getHeraldFieldValue($object) {
-    return $object->loadTargetBranch();
+    return $this->getAdapter()->getOntoBranch();
   }
 
   protected function getHeraldFieldStandardType() {
     return self::STANDARD_TEXT;
   }
+
 }
