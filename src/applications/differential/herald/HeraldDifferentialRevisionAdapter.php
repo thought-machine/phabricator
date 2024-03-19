@@ -41,7 +41,7 @@ final class HeraldDifferentialRevisionAdapter
 
   // TM CHANGES START
   public function getOntoBranch() {
-    $this->getDiff()->loadTargetBranch();
+    return $this->getDiff()->loadTargetBranch();
   }
   // TM CHANGES END
 
