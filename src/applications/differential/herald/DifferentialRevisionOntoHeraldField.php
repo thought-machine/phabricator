@@ -1,6 +1,6 @@
 <?php
 
-final class DifferentialRevisionTitleHeraldField
+final class DifferentialRevisionOntoHeraldField
   extends DifferentialRevisionHeraldField {
 
   const FIELDCONST = 'differential.revision.onto';
