@@ -51,6 +51,8 @@ should find them.
    * Added herald rules and harbourmaster builds for refs
  * Drydock
    * Modified the working copy blueprint to rebase before trying to merge.
+ * Owners
+   * Added a query function to query current viewers packages
  * Prometheus
    * Added prometheus metric infrastructure and application.
    * Added phabricator up metric to indicate whether phabricator is up or not.
