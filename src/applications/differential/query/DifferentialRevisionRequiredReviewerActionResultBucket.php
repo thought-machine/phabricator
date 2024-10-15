@@ -153,6 +153,8 @@ final class DifferentialRevisionRequiredReviewerActionResultBucket
     );
     $statuses = array_fuse($statuses);
 
+    $objects = $this->getRevisionsNotAuthored($this->objects, $phids);
+
     $results = array();
     foreach ($objects as $key => $object) {
       if (empty($statuses[$object->getModernRevisionStatus()])) {
@@ -167,6 +169,8 @@ final class DifferentialRevisionRequiredReviewerActionResultBucket
   }
 
   private function filterWaitingOnOtherReviewers(array $phids) {
+    $objects = $this->getRevisionsUnderReview($this->objects, $phids);
+
     $results = array();
     foreach ($objects as $key => $object) {
       if (!$object->isNeedsReview()) {
@@ -237,7 +241,7 @@ final class DifferentialRevisionRequiredReviewerActionResultBucket
 
   private function filterDrafts(array $phids) {
     $results = array();
-    foreach ($objects as $key => $object) {
+    foreach ($this->objects as $key => $object) {
       if (!$object->isDraft()) {
         continue;
       }
