@@ -45,41 +45,40 @@ final class DifferentialRevisionRequiredReviewerActionResultBucket
     // This includes drafts, accepted, waiting on other reviewers or the author
     $this->filterDrafts($phids);
     $this->filterRevisionsAccepted($phids);
-    $this->filterWaitingOnOtherReviewers($phids);
     $this->filterWaitingOnAuthors($phids);
 
     $groups = array();
 
-    // It would be better if this filter only included revisions which had been updated
-    // since they were last rejected by the reviewer, but that seems difficult without a larger
-    // refactor.
-    $groups[] = $this->newGroup()
-      ->setName(pht('Rejected'))
-      ->setKey(self::KEY_REJECTED)
-      ->setObjects($this->filterRejected($phids));
-
-    $groups[] = $this->newGroup()
-      ->setName(pht('Blocking'))
-      ->setKey(self::KEY_BLOCKING)
-      ->setObjects($this->filterBlocking($phids));
-
-    $groups[] = $this->newGroup()
-      ->setName(pht('Ready to Review'))
-      ->setKey(self::KEY_SHOULDREVIEW)
-      ->setObjects($this->filterShouldReview($phids));
-
-    // Because you can apply these buckets to queries which include revisions
-    // that have been closed, add an "Other" bucket if we still have stuff
-    // that didn't get filtered into any of the previous buckets.
-    if ($this->objects) {
+    $rejected = $this->filterRejected($phids);
+    if ($rejected) {
       $groups[] = $this->newGroup()
-        ->setName(pht('Other Revisions'))
-        ->setObjects($this->objects);
+        ->setName(pht('Rejected'))
+        ->setKey(self::KEY_REJECTED)
+        ->setObjects($rejected);
+    }
+
+    $blocking = $this->filterBlocking($phids);
+    if ($blocking) {
+      $groups[] = $this->newGroup()
+        ->setName(pht('Blocking'))
+        ->setKey(self::KEY_BLOCKING)
+        ->setObjects($blocking);
+    }
+
+    $shouldReview = $this->filterShouldReview($phids);
+    if ($shouldReview) {
+      $groups[] = $this->newGroup()
+        ->setName(pht('Ready to Review'))
+        ->setKey(self::KEY_SHOULDREVIEW)
+        ->setObjects($shouldReview);
     }
 
     return $groups;
   }
 
+  // It would be better if this filter only included revisions which had been updated
+  // since they were last rejected by the reviewer, but that seems difficult without a larger
+  // refactor.
   private function filterRejected(array $phids) {
     $blocking = array(
       DifferentialReviewerStatus::STATUS_REJECTED,
@@ -158,22 +157,6 @@ final class DifferentialRevisionRequiredReviewerActionResultBucket
     $results = array();
     foreach ($objects as $key => $object) {
       if (empty($statuses[$object->getModernRevisionStatus()])) {
-        continue;
-      }
-
-      $results[$key] = $object;
-      unset($this->objects[$key]);
-    }
-
-    return $results;
-  }
-
-  private function filterWaitingOnOtherReviewers(array $phids) {
-    $objects = $this->getRevisionsUnderReview($this->objects, $phids);
-
-    $results = array();
-    foreach ($objects as $key => $object) {
-      if (!$object->isNeedsReview()) {
         continue;
       }
 
