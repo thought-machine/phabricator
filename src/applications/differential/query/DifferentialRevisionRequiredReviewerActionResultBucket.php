@@ -147,7 +147,6 @@ final class DifferentialRevisionRequiredReviewerActionResultBucket
   private function filterWaitingOnAuthors(array $phids) {
     $statuses = array(
       DifferentialRevisionStatus::ACCEPTED,
-      DifferentialRevisionStatus::NEEDS_REVISION,
       DifferentialRevisionStatus::CHANGES_PLANNED,
     );
     $statuses = array_fuse($statuses);
