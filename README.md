@@ -45,6 +45,7 @@ should find them.
    * Added prometheus gauge to track the number of phabricator daemons.
  * Differential
    * Modified the revision controller to include safe landing js
+   * Created a custom revision query bucket for review actions.
  * Diffusion
    * Added Git upload archive workflow
    * Added prometheus metrics to track cluster sync successes and failures

@@ -11,6 +11,7 @@ phutil_register_library_map(array(
   'class' => array(
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionOntoHeraldField' => 'applications/differential/herald/DifferentialRevisionOntoHeraldField.php',
+    'DifferentialRevisionRequiredReviewerActionResultBucket' => 'applications/differential/query/DifferentialRevisionRequiredReviewerActionResultBucket.php',
     'DifferentialRevisionViewController' => 'applications/differential/controller/DifferentialRevisionViewController.php',
     'DiffusionGitBlameQuery' => 'applications/diffusion/query/blame/DiffusionGitBlameQuery.php',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'applications/diffusion/ssh/DiffusionGitUploadArchiveSSHWorkflow.php',
@@ -43,6 +44,7 @@ phutil_register_library_map(array(
   'xmap' => array(
     'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
     'DifferentialRevisionOntoHeraldField' => 'DifferentialRevisionHeraldField',
+    'DifferentialRevisionRequiredReviewerActionResultBucket' => 'DifferentialRevisionResultBucket',
     'DifferentialRevisionViewController' => 'DifferentialController',
     'DiffusionGitBlameQuery' => 'DiffusionBlameQuery',
     'DiffusionGitUploadArchiveSSHWorkflow' => 'DiffusionGitSSHWorkflow',
