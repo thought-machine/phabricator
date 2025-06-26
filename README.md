@@ -64,6 +64,7 @@ should find them.
      * We allow this page to be `frameable` so we can embed it in other dashboards
    * *Change* to ProjectBoardTaskCard
      * We display the current status on the task.
+   * Add project logical viewer for project or user function so we can do viewerprojects() in queries.
  * Repository
    * Pointing clone URIs to the Phabricator URI even if a repo is hosted elsewhere.
    * added buildable interface for push log for harbormaster builds for refs
