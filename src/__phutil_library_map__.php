@@ -9,6 +9,7 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'DifferentialJIRAIssuesField' => 'applications/differential/customfield/DifferentialJIRAIssuesField.php',
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionOntoHeraldField' => 'applications/differential/herald/DifferentialRevisionOntoHeraldField.php',
     'DifferentialRevisionRequiredReviewerActionResultBucket' => 'applications/differential/query/DifferentialRevisionRequiredReviewerActionResultBucket.php',
@@ -43,6 +44,7 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
+    'DifferentialJIRAIssuesField' => 'DifferentialStoredCustomField',
     'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
     'DifferentialRevisionOntoHeraldField' => 'DifferentialRevisionHeraldField',
     'DifferentialRevisionRequiredReviewerActionResultBucket' => 'DifferentialRevisionResultBucket',
