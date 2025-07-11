@@ -9,6 +9,8 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'DifferentialDiff' => 'applications/differential/storage/DifferentialDiff.php',
+    'DifferentialLintSearchEngineAttachment' => 'applications/differential/engineextension/DifferentialLintSearchEngineAttachment.php',
     'DifferentialRevisionEditEngine' => 'applications/differential/editor/DifferentialRevisionEditEngine.php',
     'DifferentialRevisionOntoHeraldField' => 'applications/differential/herald/DifferentialRevisionOntoHeraldField.php',
     'DifferentialRevisionRequiredReviewerActionResultBucket' => 'applications/differential/query/DifferentialRevisionRequiredReviewerActionResultBucket.php',
@@ -43,6 +45,18 @@ phutil_register_library_map(array(
   ),
   'function' => array(),
   'xmap' => array(
+    'DifferentialDiff' => array(
+      'DifferentialDAO',
+      'PhabricatorPolicyInterface',
+      'PhabricatorExtendedPolicyInterface',
+      'HarbormasterBuildableInterface',
+      'HarbormasterCircleCIBuildableInterface',
+      'HarbormasterBuildkiteBuildableInterface',
+      'PhabricatorApplicationTransactionInterface',
+      'PhabricatorDestructibleInterface',
+      'PhabricatorConduitResultInterface',
+    ),
+    'DifferentialLintSearchEngineAttachment' => 'PhabricatorSearchEngineAttachment',
     'DifferentialRevisionEditEngine' => 'PhabricatorEditEngine',
     'DifferentialRevisionOntoHeraldField' => 'DifferentialRevisionHeraldField',
     'DifferentialRevisionRequiredReviewerActionResultBucket' => 'DifferentialRevisionResultBucket',

@@ -46,6 +46,7 @@ should find them.
  * Differential
    * Modified the revision controller to include safe landing js
    * Created a custom revision query bucket for review actions.
+   * Exposed a diff's lint status as an attachment in the `differential.diff.search` Conduit method.
  * Diffusion
    * Added Git upload archive workflow
    * Added prometheus metrics to track cluster sync successes and failures
