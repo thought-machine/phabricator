@@ -1,5 +1,7 @@
 <?php
 
+// TM CHANGES BEGIN: Implementation of "lint" attachment
+
 final class DifferentialLintSearchEngineAttachment
   extends PhabricatorSearchEngineAttachment {
 
@@ -22,5 +24,7 @@ final class DifferentialLintSearchEngineAttachment
       ),
     );
   }
+
+// TM CHANGES END
 
 }
