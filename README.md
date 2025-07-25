@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> This repository has been superseded by [thought-machine/phorge](https://github.com/thought-machine/phorge);
+> anyone wishing to contribute should raise issues and requests there instead.
+> The code here will remain for archival purposes. This repository will no longer be maintained,
+> and any pull requests or issues will not be addressed.
+
+
 # phabricator
 *ThoughtMachine.* Most of the changes we've
 made for ourselves over the years
